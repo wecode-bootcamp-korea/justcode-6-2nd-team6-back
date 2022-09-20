@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --config ./.prettierrc.json --write '**/*.{js,jsx,ts,tsx}'"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/wecode-bootcamp-korea/justcode-6-2nd-team6-back#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dbmate": "^1.0.3",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "morgan": "^1.10.0",
@@ -26,5 +28,13 @@
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
     "typeorm": "^0.3.9"
+  },
+  "devDependencies": {
+    "bcryptjs": "^2.4.3",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "prettier": "^2.7.1"
   }
 }

@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const memberRouter = require("../routes/member");
-const browseRouter = require("../routes/browse");
-const storageRouter = require("../routes/storage");
-const purchaseRouter = require("../routes/purchase");
-const detailRouter = require("../routes/detail");
+const browseRouter = require("./browse");
+const detailRouter = require("./detail");
+const purchaseRouter = require("./purchase");
+const storageRouter = require("./storage");
+const usersRouter = require("./user");
 
-router.use("/member", memberRouter);
+router.use("/users", usersRouter);
 router.use("/browse", browseRouter);
 router.use("/storage", storageRouter);
 router.use("/purchase", purchaseRouter);

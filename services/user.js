@@ -1,4 +1,4 @@
-const memberDao = require("../models/member");
+const userDao = require("../models/user");
 
 const func = async () => {};
 
