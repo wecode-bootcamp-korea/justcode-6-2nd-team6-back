@@ -9,7 +9,7 @@ const createApp = () => {
   app.use(express.json());
   app.use(router);
   app.use(morgan("combined"));
-
+  app.use(express.static("public"));
   app.get("/ping", function (req, res, next) {
     res.json({ message: "pong" });
   });
