@@ -3,6 +3,13 @@ const userController = require("../controllers/user");
 
 const router = express.Router();
 
-//router.'method'('url', memberController.'modulename');
+// sign up
+router.post("/signup", usersController.signUpController);
+
+// sign up 할 때 account 중복 조회
+router.get("/signup", usersController.isAccountExisted);
+
+// log in
+router.post("/login", usersController.logInController);
 
 module.exports = router;
