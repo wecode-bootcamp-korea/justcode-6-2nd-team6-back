@@ -305,7 +305,7 @@ CREATE TABLE `vouchers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'florida'
+-- Dumping routines for database 'FLOrida'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

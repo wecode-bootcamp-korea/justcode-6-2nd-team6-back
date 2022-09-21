@@ -1,7 +1,64 @@
 const userService = require("../services/user");
 
-const func = async (req, res) => {};
+const createUser = async (req, res) => {
+  const { email, password, name, phone, birth } = req.body;
+
+  if (!(email && password && name && phone && birth)) {
+    res.status(400).json({ error: "INPUT_ERROR" });
+    return;
+  }
+
+  try {
+    await userService.createUser(email, password, name, phone, birth);
+    res.status(201).json({ message: "USER_CREATED" });
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
+const send = async (req, res) => {
+  const { phone } = req.body;
+
+  try {
+    await userService.send(phone);
+    res.status(200).json({ message: "SEND_MESSAGE_SUCCESS" });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
+const userVerification = async (req, res) => {
+  const { phone, verifyCode } = req.body;
+
+  try {
+    await userService.userVerification(phone, verifyCode);
+    res.status(200).json({ message: "VERIFICATION_SUCCESS" });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
+const userLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    const err = new Error("KEY_ERROR");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  try {
+    const token = await userService.userLogin(email, password);
+    res.status(200).json({ message: "LOGIN_SUCCESS", token: token });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
 
 module.exports = {
-  func,
+  createUser,
+  send,
+  userVerification,
+  userLogin,
 };
