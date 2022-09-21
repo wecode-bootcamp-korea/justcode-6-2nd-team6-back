@@ -3,13 +3,16 @@ const userController = require("../controllers/user");
 
 const router = express.Router();
 
-// sign up
-router.post("/signup", usersController.signUpController);
+// 회원가입
+router.post("/signup", userController.createUser);
 
-// sign up 할 때 account 중복 조회
-router.get("/signup", usersController.isAccountExisted);
+// 인증번호 발송
+router.post("/send", userController.send);
 
-// log in
-router.post("/login", usersController.logInController);
+// 인증번호 검증
+router.post("/verify", userController.userVerification);
+
+// 로그인
+router.post("/login", userController.userLogin);
 
 module.exports = router;

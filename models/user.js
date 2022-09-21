@@ -1,27 +1,23 @@
 const { myDataSource } = require("./typeorm-client");
 
-const getUserByAccount = async (account) => {
-  const [queryRes] = await myDataSource.query(
-    `SELECT id, account, password FROM users WHERE account = ?`,
-    [account],
+const createUser = async (email, hashedPw, name, phone, birth) => {
+  const user = await myDataSource.query(
+    `INSERT INTO 
+     users(email, password, name, phone, birth)
+     VALUES (?, ?, ?, ?, ?)`,
+    [email, hashedPw, name, phone, birth],
   );
-  return queryRes;
+  return user;
 };
 
-const getUserByPhone = async (phone) => {
-  const [queryRes] = await myDataSource.query(
-    `SELECT account FROM users WHERE phone = ?`,
-    [phone],
+const selectUser = async (email) => {
+  const selectUser = await myDataSource.query(
+    `SELECT id, email, password
+    FROM users
+    WHERE email = ?`,
+    [email],
   );
-  return queryRes;
+  return selectUser;
 };
 
-const createUser = async (account, hashedPw, name, phone, birth) => {
-  const queryRes = await myDataSource.query(
-    `INSERT INTO users(account, password, name, phone, birth) VALUES (?, ?, ?, ?, ?)`,
-    [account, hashedPw, name, phone, birth],
-  );
-  return queryRes;
-};
-
-module.exports = { createUser, getUserByAccount, getUserByPhone };
+module.exports = { createUser, selectUser };

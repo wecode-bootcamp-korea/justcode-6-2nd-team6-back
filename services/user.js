@@ -1,73 +1,108 @@
 const userDao = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const request = require("request");
+const Cache = require("memory-cache");
+const CryptoJS = require("crypto-js");
 const { SECRET_KEY } = process.env;
 
-// 회원가입
-const signUpService = async (account, password, name, phone, birth) => {
-  const isUserIdExisted = await usersDao.getUserByAccount(account);
-  if (isUserIdExisted) {
-    // user 있는지 확인
-    const error = new Error("USER_EXISTED");
-    error.statusCode = 400;
+const createUser = async (email, password, name, phone, birth) => {
+  const hashedPw = await bcrypt.hash(password, 12);
+
+  const user = await userDao.createUser(email, hashedPw, name, phone, birth);
+
+  return user;
+};
+
+const send = async (phone) => {
+  const date = Date.now().toString();
+  const uri = process.env.SERVICE_ID; //서비스 ID
+  const secretKey = process.env.NCP_SECRET_KEY; // Secret Key
+  const accessKey = process.env.NCP_KEY; //Access Key
+  const method = "POST";
+  const space = " ";
+  const newLine = "\n";
+  const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
+  const url2 = `/sms/v2/services/${uri}/messages`;
+  const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
+  hmac.update(method);
+  hmac.update(space);
+  hmac.update(url2);
+  hmac.update(newLine);
+  hmac.update(date);
+  hmac.update(newLine);
+  hmac.update(accessKey);
+  const hash = hmac.finalize();
+  const signature = hash.toString(CryptoJS.enc.Base64);
+
+  Cache.del(phone);
+
+  const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+
+  Cache.put(phone, verifyCode.toString());
+
+  const check = request({
+    method: method,
+    json: true,
+    uri: url,
+    headers: {
+      "Contenc-type": "application/json; charset=utf-8",
+      "x-ncp-iam-access-key": accessKey,
+      "x-ncp-apigw-timestamp": date,
+      "x-ncp-apigw-signature-v2": signature,
+    },
+    body: {
+      type: "SMS",
+      countryCode: "82",
+      from: "01038826683",
+      content: `인증번호 [${verifyCode}]를 입력해주세요.`,
+      messages: [
+        {
+          to: `${phone}`,
+        },
+      ],
+    },
+  });
+  return check;
+};
+
+const userVerification = async (phone, verifyCode) => {
+  const CacheData = Cache.get(phone);
+
+  if (!CacheData) {
+    const err = new Error("INPUT_ERROR");
+    err.statusCode = 500;
+    throw err;
+  } else if (CacheData !== verifyCode) {
+    const err = new Error("VERIFICATION_CODE_DO_NOT_MATCH");
+    err.statusCode = 500;
+    throw err;
+  }
+  return Cache.del(phone);
+};
+
+const userLogin = async (email, password) => {
+  const selectUser = await userDao.selectUser(email, password);
+
+  if (!selectUser[0]) {
+    const error = new Error("NOT_A_USER");
+    error.statusCode = 404;
     throw error;
   }
+  //body에서 받아온 pw와 user에서 받아온 pw비교
+  const comparePw = bcrypt.compareSync(password, selectUser[0].password);
 
-  const isUserPhoneExisted = await usersDao.getUserByPhone(phone);
-
-  if (isUserPhoneExisted) {
-    // phone number로 user 확인
-    const error = new Error("USER_EXISTED");
-    error.statusCode = 400;
-    throw error;
-  } else if (!isUserIdExisted && !isUserPhoneExisted) {
-    // 둘 다 없으면
-    const salt = bcrypt.genSaltSync(15);
-    const hashedPw = bcrypt.hashSync(password, salt);
-    const user = await usersDao.createUser(
-      account,
-      hashedPw,
-      name,
-      phone,
-      birth,
+  if (comparePw) {
+    const token = jwt.sign(
+      { userId: selectUser[0].id },
+      process.env.SECRET_KEY,
     );
-    return user;
-  }
-};
-
-// 회원가입 - account 중복 체크
-const isAccountExisted = async (account) => {
-  const checkRes = await usersDao.getUserByAccount(account);
-  if (checkRes) {
-    const error = new Error("ACCOUNT_EXISTED");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  return checkRes;
-};
-
-// 로그인
-const logInService = async (account, password) => {
-  const userIdPw = await usersDao.getUserByAccount(account);
-  if (!userIdPw) {
-    const error = new Error("NO_USER_EXISTED");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  const isPasswordCorrect = bcrypt.compareSync(password, userIdPw.password);
-
-  if (!isPasswordCorrect) {
-    const error = new Error("PASSWORD_INCORRECTED");
-    error.statusCode = 400;
-    throw error;
-  } else if (isPasswordCorrect) {
-    const token = jwt.sign({ userAccount: userIdPw.account }, SECRET_KEY, {
-      expiresIn: "1d",
-    });
     return token;
+  } else {
+    const err = new Error("WRONG_PASSWORD");
+    err.statusCode = 400;
+    throw err;
   }
 };
 
-module.exports = { signUpService, isAccountExisted, logInService };
+module.exports = { createUser, send, userVerification, userLogin };
