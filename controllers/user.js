@@ -39,6 +39,23 @@ const userVerification = async (req, res) => {
   }
 };
 
+// 휴대폰 번호 중복 체크
+const userExisted = async (req, res) => {
+  const { phone } = req.body;
+
+  if (!phone) {
+    res.status(400).json({ error: "INPUT_ERROR" });
+    return;
+  }
+
+  try {
+    await userService.userExisted(phone);
+    res.status(200).json({ message: "SUCCESS" });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -60,5 +77,6 @@ module.exports = {
   createUser,
   send,
   userVerification,
+  userExisted,
   userLogin,
 };

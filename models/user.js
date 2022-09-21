@@ -10,6 +10,15 @@ const createUser = async (email, hashedPw, name, phone, birth) => {
   return user;
 };
 
+const userExisted = async (phone) => {
+  const user = await myDataSource.query(
+    `SELECT id, email, name, phone 
+    FROM users WHERE phone = ?`,
+    [phone],
+  );
+  return user;
+};
+
 const selectUser = async (email) => {
   const selectUser = await myDataSource.query(
     `SELECT id, email, password
@@ -20,4 +29,4 @@ const selectUser = async (email) => {
   return selectUser;
 };
 
-module.exports = { createUser, selectUser };
+module.exports = { createUser, userExisted, selectUser };

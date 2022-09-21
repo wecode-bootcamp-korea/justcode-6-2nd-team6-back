@@ -81,6 +81,19 @@ const userVerification = async (phone, verifyCode) => {
   return Cache.del(phone);
 };
 
+// 휴대폰 번호 중복 체크
+const userExisted = async (phone) => {
+  const user = await userDao.userExisted(phone);
+
+  if (user) {
+    const err = new Error("USER_PHONENUMBER_EXISTED");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  return user;
+};
+
 const userLogin = async (email, password) => {
   const selectUser = await userDao.selectUser(email, password);
 
@@ -105,4 +118,4 @@ const userLogin = async (email, password) => {
   }
 };
 
-module.exports = { createUser, send, userVerification, userLogin };
+module.exports = { createUser, send, userVerification, userExisted, userLogin };
