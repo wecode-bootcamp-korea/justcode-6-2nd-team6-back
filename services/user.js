@@ -7,7 +7,7 @@ const CryptoJS = require("crypto-js");
 const { SECRET_KEY } = process.env;
 
 const createUser = async (email, password, name, phone, birth) => {
-  const hashedPw = await bcrypt.hash(password, 12);
+  const hashedPw = await bcrypt.hash(password, 10);
 
   const user = await userDao.createUser(email, hashedPw, name, phone, birth);
 
@@ -55,7 +55,7 @@ const send = async (phone) => {
       type: "SMS",
       countryCode: "82",
       from: "01038826683",
-      content: `인증번호 [${verifyCode}]를 입력해주세요.`,
+      content: `[FLOrida]인증번호 [${verifyCode}]를 입력해주세요.`,
       messages: [
         {
           to: `${phone}`,
@@ -81,6 +81,18 @@ const userVerification = async (phone, verifyCode) => {
   return Cache.del(phone);
 };
 
+const userExisted = async (phone) => {
+  const user = await userDao.userExisted(phone);
+
+  if (user) {
+    const err = new Error("USER_PHONENUMBER_EXISTED");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  return user;
+};
+
 const userLogin = async (email, password) => {
   const selectUser = await userDao.selectUser(email, password);
 
@@ -89,13 +101,16 @@ const userLogin = async (email, password) => {
     error.statusCode = 404;
     throw error;
   }
-  //body에서 받아온 pw와 user에서 받아온 pw비교
+
   const comparePw = bcrypt.compareSync(password, selectUser[0].password);
 
   if (comparePw) {
     const token = jwt.sign(
       { userId: selectUser[0].id },
       process.env.SECRET_KEY,
+      /* {
+        expiresIn: "1d",
+      }, */
     );
     return token;
   } else {
@@ -105,4 +120,15 @@ const userLogin = async (email, password) => {
   }
 };
 
-module.exports = { createUser, send, userVerification, userLogin };
+const getUserCharacter = async (userId) => {
+  return await userDao.getUserCharacter(userId);
+};
+
+module.exports = {
+  createUser,
+  send,
+  userVerification,
+  userExisted,
+  userLogin,
+  getUserCharacter,
+};
