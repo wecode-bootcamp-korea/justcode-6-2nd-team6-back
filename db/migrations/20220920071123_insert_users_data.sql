@@ -1,7 +1,7 @@
 -- migrate:up
 
 INSERT INTO 
-users (account,password,name,birth,phone,voucher_id)
+users (email, password, name, birth, phone, voucher_id)
 VALUES
 ('codekim@coder.com', 'Password1', 'Kimcode', '1997-08-19', '010-0000-0000', null),
 ('lee@coder.com', 'Password2', 'Leecoder', '1989-10-15', '010-0000-0000', 1),
