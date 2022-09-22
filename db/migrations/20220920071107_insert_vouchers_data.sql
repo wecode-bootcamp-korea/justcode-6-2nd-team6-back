@@ -1,7 +1,7 @@
 -- migrate:up
 
 INSERT INTO 
-vouchers (name,description,origin_price,sale_price,membership_id)
+vouchers (name, description, origin_price, sale_price, membership_id)
 VALUES
 ("무제한 듣기+오프라인 재생","기기제한 없음, 무제한 스트리밍, 오프라인 재생",11.000,100,1),
 ("무제한 듣기","기기제한 없음, 무제한 스트리밍",8.000,100,2),

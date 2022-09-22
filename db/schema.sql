@@ -10,6 +10,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Temporary view structure for view `albumdetail`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `albumdetail` AS SELECT
+ 1 AS `id`,
+ 1 AS `albumTitle`,
+ 1 AS `artist`,
+ 1 AS `albumType`,
+ 1 AS `albumImage`,
+ 1 AS `albumReleaseDate`,
+ 1 AS `releaseCompany`,
+ 1 AS `managementCompany`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `albumplaycountsum`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `albumplaycountsum` AS SELECT
+ 1 AS `album_id`,
+ 1 AS `total_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `albums`
 --
 
@@ -33,6 +61,45 @@ CREATE TABLE `albums` (
   CONSTRAINT `albums_ibfk_2` FOREIGN KEY (`release_company_id`) REFERENCES `release_companies` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `albumtracklist`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `albumtracklist` AS SELECT
+ 1 AS `albumId`,
+ 1 AS `songId`,
+ 1 AS `trackNumber`,
+ 1 AS `songTitle`,
+ 1 AS `albumTitle`,
+ 1 AS `artist`,
+ 1 AS `isTitle`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `artistdetail`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `artistdetail` AS SELECT
+ 1 AS `artistId`,
+ 1 AS `artistName`,
+ 1 AS `artistImage`,
+ 1 AS `artistType`,
+ 1 AS `artistGenre`,
+ 1 AS `albumId`,
+ 1 AS `albumTitle`,
+ 1 AS `albumType`,
+ 1 AS `albumReleaseDate`,
+ 1 AS `albumImage`,
+ 1 AS `albumPlayCount`,
+ 1 AS `songId`,
+ 1 AS `songTitle`,
+ 1 AS `songPlayCount`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `artists`
@@ -141,6 +208,22 @@ CREATE TABLE `play_counts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Temporary view structure for view `playlistdetail`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `playlistdetail` AS SELECT
+ 1 AS `playlistId`,
+ 1 AS `characterId`,
+ 1 AS `playlistTitle`,
+ 1 AS `playlistSongsCount`,
+ 1 AS `createdDate`,
+ 1 AS `songId`,
+ 1 AS `albumImage`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `playlists`
 --
 
@@ -174,6 +257,34 @@ CREATE TABLE `playlists_songs` (
   CONSTRAINT `playlists_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `playlistsongs`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `playlistsongs` AS SELECT
+ 1 AS `playlistId`,
+ 1 AS `songId`,
+ 1 AS `songTitle`,
+ 1 AS `albumId`,
+ 1 AS `albumTitle`,
+ 1 AS `albumImage`,
+ 1 AS `atsId`,
+ 1 AS `artist`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `playlistsongscount`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `playlistsongscount` AS SELECT
+ 1 AS `playlistId`,
+ 1 AS `playlistSongsCount`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `release_companies`
@@ -221,6 +332,34 @@ CREATE TABLE `schema_migrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Temporary view structure for view `songdetail`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `songdetail` AS SELECT
+ 1 AS `id`,
+ 1 AS `songTitle`,
+ 1 AS `songArtist`,
+ 1 AS `albumTitle`,
+ 1 AS `albumCover`,
+ 1 AS `musicBy`,
+ 1 AS `lyricsBy`,
+ 1 AS `lyrics`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `songplaycountsum`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `songplaycountsum` AS SELECT
+ 1 AS `song_id`,
+ 1 AS `total_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `songs`
 --
 
@@ -256,6 +395,7 @@ CREATE TABLE `user_characters` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `name` varchar(3000) NOT NULL,
+  `profile_image` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_characters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -270,7 +410,7 @@ CREATE TABLE `user_characters` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `account` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `password` varchar(3000) NOT NULL,
   `name` varchar(50) NOT NULL,
   `birth` varchar(100) DEFAULT NULL,
@@ -278,7 +418,7 @@ CREATE TABLE `users` (
   `voucher_id` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `account` (`account`),
+  UNIQUE KEY `email` (`email`),
   KEY `voucher_id` (`voucher_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`voucher_id`) REFERENCES `vouchers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -305,8 +445,170 @@ CREATE TABLE `vouchers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'FLOrida'
+-- Dumping routines for database 'florida'
 --
+
+--
+-- Final view structure for view `albumdetail`
+--
+
+/*!50001 DROP VIEW IF EXISTS `albumdetail`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `albumdetail` AS select `a`.`id` AS `id`,`a`.`name` AS `albumTitle`,`ats`.`name` AS `artist`,`a`.`album_type` AS `albumType`,`a`.`album_image` AS `albumImage`,`a`.`release_date` AS `albumReleaseDate`,`rc`.`name` AS `releaseCompany`,`mc`.`name` AS `managementCompany` from (((`albums` `a` left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) left join `release_companies` `rc` on((`a`.`release_company_id` = `rc`.`id`))) left join `management_companies` `mc` on((`ats`.`management_company_id` = `mc`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `albumplaycountsum`
+--
+
+/*!50001 DROP VIEW IF EXISTS `albumplaycountsum`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `albumplaycountsum` AS select `s`.`album_id` AS `album_id`,sum(`pc`.`play_count`) AS `total_count` from ((`play_counts` `pc` left join `songs` `s` on((`s`.`id` = `pc`.`song_id`))) left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) group by `s`.`album_id` order by `s`.`album_id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `albumtracklist`
+--
+
+/*!50001 DROP VIEW IF EXISTS `albumtracklist`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `albumtracklist` AS select `a`.`id` AS `albumId`,`s`.`id` AS `songId`,`s`.`track_number` AS `trackNumber`,`s`.`name` AS `songTitle`,`a`.`name` AS `albumTitle`,`ats`.`name` AS `artist`,`s`.`is_title` AS `isTitle` from ((`albums` `a` left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) left join `songs` `s` on((`s`.`album_id` = `a`.`id`))) group by `s`.`id` order by `s`.`album_id`,`s`.`track_number` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `artistdetail`
+--
+
+/*!50001 DROP VIEW IF EXISTS `artistdetail`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `artistdetail` AS select `ats`.`id` AS `artistId`,`ats`.`name` AS `artistName`,`ats`.`artist_image` AS `artistImage`,`ats`.`artist_type` AS `artistType`,`ats`.`genre_id` AS `artistGenre`,`a`.`id` AS `albumId`,`a`.`name` AS `albumTitle`,`a`.`album_type` AS `albumType`,`a`.`release_date` AS `albumReleaseDate`,`a`.`album_image` AS `albumImage`,`apcs`.`total_count` AS `albumPlayCount`,`s`.`id` AS `songId`,`s`.`name` AS `songTitle`,`spcs`.`total_count` AS `songPlayCount` from ((((`artists` `ats` left join `albums` `a` on((`a`.`artist_id` = `ats`.`id`))) left join `songs` `s` on((`s`.`album_id` = `a`.`id`))) left join `songplaycountsum` `spcs` on((`spcs`.`song_id` = `s`.`id`))) left join `albumplaycountsum` `apcs` on((`apcs`.`album_id` = `a`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `playlistdetail`
+--
+
+/*!50001 DROP VIEW IF EXISTS `playlistdetail`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `playlistdetail` AS select `p`.`id` AS `playlistId`,`p`.`character_id` AS `characterId`,`p`.`name` AS `playlistTitle`,`psc`.`playlistSongsCount` AS `playlistSongsCount`,`p`.`created_at` AS `createdDate`,`s`.`id` AS `songId`,`a`.`album_image` AS `albumImage` from (((((`playlists` `p` left join `playlists_songs` `ps` on((`ps`.`playlist_id` = `p`.`id`))) left join `songs` `s` on((`ps`.`song_id` = `s`.`id`))) left join `playlistsongscount` `psc` on((`p`.`id` = `psc`.`playlistId`))) left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) group by `p`.`id` order by `p`.`id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `playlistsongs`
+--
+
+/*!50001 DROP VIEW IF EXISTS `playlistsongs`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `playlistsongs` AS select `p`.`id` AS `playlistId`,`s`.`id` AS `songId`,`s`.`name` AS `songTitle`,`a`.`id` AS `albumId`,`a`.`name` AS `albumTitle`,`a`.`album_image` AS `albumImage`,`ats`.`id` AS `atsId`,`ats`.`name` AS `artist` from (((((`playlists` `p` left join `playlists_songs` `ps` on((`ps`.`playlist_id` = `p`.`id`))) left join `songs` `s` on((`ps`.`song_id` = `s`.`id`))) left join `playlistsongscount` `psc` on((`p`.`id` = `psc`.`playlistId`))) left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) order by `p`.`id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `playlistsongscount`
+--
+
+/*!50001 DROP VIEW IF EXISTS `playlistsongscount`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `playlistsongscount` AS select `playlists_songs`.`playlist_id` AS `playlistId`,count(`playlists_songs`.`id`) AS `playlistSongsCount` from `playlists_songs` group by `playlists_songs`.`playlist_id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `songdetail`
+--
+
+/*!50001 DROP VIEW IF EXISTS `songdetail`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `songdetail` AS select `s`.`id` AS `id`,`s`.`name` AS `songTitle`,`ats`.`name` AS `songArtist`,`a`.`name` AS `albumTitle`,`a`.`album_image` AS `albumCover`,`s`.`music_by` AS `musicBy`,`s`.`lyrics_by` AS `lyricsBy`,`s`.`lyrics` AS `lyrics` from ((`songs` `s` left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `songplaycountsum`
+--
+
+/*!50001 DROP VIEW IF EXISTS `songplaycountsum`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `songplaycountsum` AS select `play_counts`.`song_id` AS `song_id`,sum(`play_counts`.`play_count`) AS `total_count` from `play_counts` group by `play_counts`.`song_id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
