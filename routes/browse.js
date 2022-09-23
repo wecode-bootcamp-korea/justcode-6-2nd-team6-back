@@ -3,6 +3,6 @@ const browseController = require("../controllers/browse");
 
 const router = express.Router();
 
-//router.'method'('url', browseController.'modulename');
+//router.get("/", browseController.getbrowse);
 
 module.exports = router;

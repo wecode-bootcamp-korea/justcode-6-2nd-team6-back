@@ -89,7 +89,27 @@ Watch: http://youtu.be/tdDMgDZ4neo", "싱글", 1, "https://linkstorage.linkfire.
 (14," Father", "Song: Diamond Eyes - Father [NCS Release]
 Music provided by NoCopyrightSounds
 Free Download/Stream: http://ncs.io/iFather
-Watch: http://youtu.be/5NTvXKUXEX4", "싱글", 1, "https://linkstorage.linkfire.com/medialinks/images/eb747457-ed8b-4959-b369-90faa70a6028/artwork-440x440.jpg", 20210408);
+Watch: http://youtu.be/5NTvXKUXEX4", "싱글", 1, "https://linkstorage.linkfire.com/medialinks/images/eb747457-ed8b-4959-b369-90faa70a6028/artwork-440x440.jpg", 20210408),
+(5,"Shivers","Song: Netrum & Halvorsen - Shivers [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/Shivers
+Watch: http://youtu.be/rf_fSzuom6o","싱글",1,"https://linkstorage.linkfire.com/medialinks/images/3370e991-abea-4aff-9667-483d7f2ffd9b/artwork-440x440.jpg","20201217"),
+(5,"Phoenix","Song: Netrum & Halvorsen - Phoenix [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://NCS.io/Phoenix
+Watch: http://youtu.be/yH88qRmgkGI","싱글",1,"https://linkstorage.linkfire.com/medialinks/images/7438735b-7816-415a-b3bb-985b6a3f930b/artwork-440x440.jpg","20210820"),
+(14,"23","Song: Diamond Eyes - 23 [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/D23
+Watch: http://youtu.be/Sxcqo4iQwzc","싱글",1,"https://linkstorage.linkfire.com/medialinks/images/4aecb8b0-985b-4a0b-b285-55fd21d5b088/artwork-440x440.jpg","20200717"),
+(14,"Gravity","Song: Diamond Eyes - Gravity [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/GravityD
+Watch: http://youtu.be/WWtpK0hwVdk","싱글",1,"https://linkstorage.linkfire.com/medialinks/images/0ce3fb1d-f124-49f1-bfab-96e43774ee2e/artwork-440x440.jpg","20200118"),
+(14,"Everything","Song: Diamond Eyes - Everything [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/Everything
+Watch: http://youtu.be/_XspQUK22-U","싱글",1,"https://linkstorage.linkfire.com/medialinks/images/30a9456c-6779-48e4-a72e-d226a078ccd1/artwork-440x440.jpg","20180502");
 
 
 -- migrate:down
