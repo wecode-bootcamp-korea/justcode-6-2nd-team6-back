@@ -1145,7 +1145,12 @@ VALUES
  (Oh, father)
  (Never let me go)
  (You are with me)",12),
-(2,15,"Father (Inst.)",60,"Diamond Eyes","Diamond Eyes",0,null,12);
+(2,15,"Father (Inst.)",60,"Diamond Eyes","Diamond Eyes",0,null,12),
+(1,16,"Shivers","61","Diamond Eyes","Diamond Eyes",1,null,12),
+(1,17,"Phoenix","62","Diamond Eyes","Diamond Eyes",1,null,12),
+(1,18,"23","63","Diamond Eyes","Diamond Eyes",1,null,12),
+(1,19,"Gravity","64","Diamond Eyes","Diamond Eyes",1,null,12),
+(1,20,"Everything","65","Diamond Eyes","Diamond Eyes",1,null,12);
 
 -- migrate:down
 

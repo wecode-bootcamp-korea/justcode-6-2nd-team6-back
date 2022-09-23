@@ -1,7 +1,7 @@
 const browseService = require("../services/browse");
 
-const func = async (req, res) => {};
+const getBrowse = async (req, res) => {};
 
 module.exports = {
-  func,
+  getBrowse,
 };

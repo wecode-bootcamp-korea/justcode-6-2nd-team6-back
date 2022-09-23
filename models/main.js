@@ -51,7 +51,8 @@ const getRecentReleasedAlbums = async (result) => {
      a.name AS albumTitle,
      a.release_date AS releaseDate,
      ats.id AS artistId,
-     ats.name AS artist
+     ats.name AS artist,
+     ats.scope AS scope 
      FROM albums AS a
      LEFT JOIN songs AS s ON s.album_id = a.id
      LEFT JOIN artists AS ats ON a.artist_id = ats.id

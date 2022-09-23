@@ -23,7 +23,8 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `albumImage`,
  1 AS `albumReleaseDate`,
  1 AS `releaseCompany`,
- 1 AS `managementCompany`*/;
+ 1 AS `managementCompany`,
+ 1 AS `description`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -59,7 +60,7 @@ CREATE TABLE `albums` (
   KEY `release_company_id` (`release_company_id`),
   CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`id`),
   CONSTRAINT `albums_ibfk_2` FOREIGN KEY (`release_company_id`) REFERENCES `release_companies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -255,8 +256,24 @@ CREATE TABLE `playlists_songs` (
   KEY `song_id` (`song_id`),
   CONSTRAINT `playlists_songs_ibfk_1` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`),
   CONSTRAINT `playlists_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `playlistslide`
+--
+
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `playlistslide` AS SELECT
+ 1 AS `playlistId`,
+ 1 AS `playlistTitle`,
+ 1 AS `createdDate`,
+ 1 AS `playlistSongsCount`,
+ 1 AS `albumImage`,
+ 1 AS `songTitle`,
+ 1 AS `artist`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Temporary view structure for view `playlistsongs`
@@ -382,7 +399,7 @@ CREATE TABLE `songs` (
   KEY `genre_id` (`genre_id`),
   CONSTRAINT `songs_ibfk_1` FOREIGN KEY (`album_id`) REFERENCES `albums` (`id`),
   CONSTRAINT `songs_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -461,7 +478,7 @@ CREATE TABLE `vouchers` (
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `albumdetail` AS select `a`.`id` AS `id`,`a`.`name` AS `albumTitle`,`ats`.`name` AS `artist`,`a`.`album_type` AS `albumType`,`a`.`album_image` AS `albumImage`,`a`.`release_date` AS `albumReleaseDate`,`rc`.`name` AS `releaseCompany`,`mc`.`name` AS `managementCompany` from (((`albums` `a` left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) left join `release_companies` `rc` on((`a`.`release_company_id` = `rc`.`id`))) left join `management_companies` `mc` on((`ats`.`management_company_id` = `mc`.`id`))) */;
+/*!50001 VIEW `albumdetail` AS select `a`.`id` AS `id`,`a`.`name` AS `albumTitle`,`ats`.`name` AS `artist`,`a`.`album_type` AS `albumType`,`a`.`album_image` AS `albumImage`,`a`.`release_date` AS `albumReleaseDate`,`rc`.`name` AS `releaseCompany`,`mc`.`name` AS `managementCompany`,`a`.`description` AS `description` from (((`albums` `a` left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) left join `release_companies` `rc` on((`a`.`release_company_id` = `rc`.`id`))) left join `management_companies` `mc` on((`ats`.`management_company_id` = `mc`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -534,6 +551,24 @@ CREATE TABLE `vouchers` (
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `playlistdetail` AS select `p`.`id` AS `playlistId`,`p`.`character_id` AS `characterId`,`p`.`name` AS `playlistTitle`,`psc`.`playlistSongsCount` AS `playlistSongsCount`,`p`.`created_at` AS `createdDate`,`s`.`id` AS `songId`,`a`.`album_image` AS `albumImage` from (((((`playlists` `p` left join `playlists_songs` `ps` on((`ps`.`playlist_id` = `p`.`id`))) left join `songs` `s` on((`ps`.`song_id` = `s`.`id`))) left join `playlistsongscount` `psc` on((`p`.`id` = `psc`.`playlistId`))) left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) group by `p`.`id` order by `p`.`id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `playlistslide`
+--
+
+/*!50001 DROP VIEW IF EXISTS `playlistslide`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `playlistslide` AS select `p`.`id` AS `playlistId`,`p`.`name` AS `playlistTitle`,`p`.`created_at` AS `createdDate`,`psc`.`playlistSongsCount` AS `playlistSongsCount`,`a`.`album_image` AS `albumImage`,`s`.`name` AS `songTitle`,`ats`.`name` AS `artist` from (((((`playlists` `p` join `playlists_songs` `ps` on((`ps`.`playlist_id` = `p`.`id`))) left join `songs` `s` on((`ps`.`song_id` = `s`.`id`))) left join `playlistsongscount` `psc` on((`p`.`id` = `psc`.`playlistId`))) left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
