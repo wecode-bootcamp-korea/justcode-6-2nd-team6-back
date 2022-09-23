@@ -69,7 +69,7 @@ const userLogin = async (req, res) => {
 };
 
 const getUserCharacter = async (req, res) => {
-  const { id } = req.foundUser;
+  const { id } = req.findUser;
 
   if (!id) {
     res.status(401).json({ message: "NEED_LOGIN" });

@@ -1,7 +1,57 @@
 const purchaseService = require("../services/purchase");
 
-const func = async (req, res) => {};
+const getVouchers = async (req, res) => {
+  try {
+    const vouchers = await purchaseService.getVouchers();
+    res.status(200).json({ data: vouchers });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "ERROR" });
+  }
+};
+
+const getUserVouchers = async (req, res) => {
+  const { id } = req.findUser;
+
+  if (!id) {
+    res.status(401).json({ message: "NEED_LOGIN" });
+    return;
+  }
+
+  try {
+    const vouchers = await purchaseService.getUserVouchers(id);
+    res.status(200).json({ data: vouchers });
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
+const purchaseVoucher = async (req, res) => {
+  const { voucherId } = req.body;
+  const { id } = req.findUser;
+
+  if (!id) {
+    res.status(401).json({ message: "NEED_LOGIN" });
+    return;
+  }
+
+  if (!voucherId) {
+    res.status(400).json({ message: "KEY_ERROR" });
+    return;
+  }
+
+  try {
+    await purchaseService.purchaseVoucher(voucherId, id);
+    res.status(200).json({ message: "SUCCESS" });
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
 
 module.exports = {
-  func,
+  getVouchers,
+  getUserVouchers,
+  purchaseVoucher,
 };

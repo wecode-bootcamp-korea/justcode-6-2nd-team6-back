@@ -55,7 +55,7 @@ const send = async (phone) => {
       type: "SMS",
       countryCode: "82",
       from: "01038826683",
-      content: `[FLOrida]인증번호 [${verifyCode}]를 입력해주세요.`,
+      content: `[FLOrida]인증번호 [${verifyCode}]를 입력해 주세요.`,
       messages: [
         {
           to: `${phone}`,
@@ -94,24 +94,20 @@ const userExisted = async (phone) => {
 };
 
 const userLogin = async (email, password) => {
-  const selectUser = await userDao.selectUser(email, password);
+  const selectUser = await userDao.selectUser(email);
 
-  if (!selectUser[0]) {
+  if (!selectUser) {
     const error = new Error("NOT_A_USER");
     error.statusCode = 404;
     throw error;
   }
 
-  const comparePw = bcrypt.compareSync(password, selectUser[0].password);
+  const comparePw = bcrypt.compareSync(password, selectUser.password);
 
   if (comparePw) {
-    const token = jwt.sign(
-      { userId: selectUser[0].id },
-      process.env.SECRET_KEY,
-      /* {
-        expiresIn: "1d",
-      }, */
-    );
+    const token = jwt.sign({ userEmail: selectUser.email }, SECRET_KEY, {
+      expiresIn: "1d",
+    });
     return token;
   } else {
     const err = new Error("WRONG_PASSWORD");
