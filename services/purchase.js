@@ -30,6 +30,32 @@ const purchaseVoucher = async (voucherId, id) => {
   return await purchaseDao.purchaseVoucher(voucherId, id);
 };
 
+//access token
+/* const get_token= async=> {
+	const access_token = await axios({
+    	url: "https://api.iamport.kr/users/getToken",
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            data: {
+                imp_key: "REST API KEY",
+                imp_secret: "REST API SECRET"
+            }
+    });
+    return access_token
+} */
+
+//아임포트에서 결제 정보 받아오기
+/* const get_imp= async(imp_uid)=> {
+const access_token= await get_token();
+const getPaymentData = await axios({
+	url:`https://api.iamport.kr/payments/${imp_uid}`, // imp_uid 전달
+	method: "get", // GET method
+	headers: { "Authorization": access_token } // 인증 토큰 Authorization header에 추가
+});
+const paymentData = getPaymentData.data.response;
+        
+} */
+
 module.exports = {
   getVouchers,
   getUserVouchers,
