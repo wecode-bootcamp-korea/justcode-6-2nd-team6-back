@@ -1,9 +1,9 @@
 const storageDao = require("../models/storage");
 const jwt = require("jsonwebtoken");
 
-const getUserPlaylist = async (userId) => {
-  return await storageDao.getUserPlaylist(userId);
-};
+// const getUserPlaylist = async (userId) => {
+//   return await storageDao.getUserPlaylist(userId);
+// };
 
 const createPlaylist = async (userId, title) => {
   return await storageDao.createPlaylist(userId, title);
@@ -72,7 +72,7 @@ const getRecentListen = async (userId) => {
 };
 
 module.exports = {
-  getUserPlaylist,
+  //getUserPlaylist,
   createPlaylist,
   createPlaylistSongs,
   editPlaylistTitle,

@@ -1,22 +1,22 @@
 const e = require("express");
 const storageService = require("../services/storage");
 
-const getUserPlaylist = async (req, res) => {
-  const { id } = req.findUser;
+// const getUserPlaylist = async (req, res) => {
+//   const { id } = req.findUser;
 
-  if (!id) {
-    res.status(401).json({ message: "NEED_LOGIN" });
-    return;
-  }
+//   if (!id) {
+//     res.status(401).json({ message: "NEED_LOGIN" });
+//     return;
+//   }
 
-  try {
-    const playlist = await storageService.getUserPlaylist(id);
-    res.status(201).json({ data: playlist });
-  } catch (err) {
-    console.log(err);
-    res.status(err.statusCode || 500).json({ err: err.message });
-  }
-};
+//   try {
+//     const playlist = await storageService.getUserPlaylist(id);
+//     res.status(201).json({ data: playlist });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(err.statusCode || 500).json({ err: err.message });
+//   }
+// };
 
 const createPlaylist = async (req, res) => {
   const { id } = req.findUser;
@@ -144,7 +144,7 @@ const noToken = async () => {
 };
 
 module.exports = {
-  getUserPlaylist,
+  //getUserPlaylist,
   createPlaylist,
   createPlaylistSongs,
   editPlaylistTitle,
