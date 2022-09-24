@@ -3,6 +3,6 @@ const storageController = require("../controllers/storage");
 
 const router = express.Router();
 
-// router.'method'('url', storageController.'modulename');
+router.get("/:page", storageController.getStorage);
 
 module.exports = router;
