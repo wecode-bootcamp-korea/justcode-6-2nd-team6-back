@@ -19,15 +19,11 @@ const getUserVouchers = async (id) => {
     throw err;
   }
 
-  vouchers.map((data) => {
-    data.voucher = JSON.parse(data.voucher);
-  });
-
   return vouchers;
 };
 
-const purchaseVoucher = async (voucherId, id) => {
-  return await purchaseDao.purchaseVoucher(voucherId, id);
+const purchaseVoucher = async (voucherId, userId, payment, payWith) => {
+  return await purchaseDao.purchaseVoucher(voucherId, userId, payment, payWith);
 };
 
 //access token
