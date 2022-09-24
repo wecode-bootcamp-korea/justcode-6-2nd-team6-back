@@ -1,11 +1,11 @@
 -- migrate:up
 
 INSERT INTO 
-release_companies (name)
-VALUES ("NCS Release");
+management_companies (name)
+VALUES ("Copyright Free");
 
 -- migrate:down
 
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE release_companies;
+TRUNCATE management_companies;
 SET FOREIGN_KEY_CHECKS = 1;

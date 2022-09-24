@@ -1,13 +1,13 @@
 -- migrate:up
 
-CREATE TABLE user_characters (
+CREATE TABLE playlists (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 user_id INT NOT NULL,
-name VARCHAR(3000) NOT NULL,
-profile_image VARCHAR(2000),
+name VARCHAR(5000),
+created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 FOREIGN KEY (user_id) REFERENCES users (id)
 )
 
 -- migrate:down
 
-DROP TABLE user_characters;
+DROP TABLE playlists;

@@ -1,6 +1,6 @@
 -- migrate:up
 
-INSERT INTO reviews (character_id, comment, playlist_id) 
+INSERT INTO reviews (user_id, comment, playlist_id) 
 VALUES
 (1, "노래 좋아요~~", 1),
 (2, "노래 좋아요~", 1),

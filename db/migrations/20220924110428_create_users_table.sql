@@ -7,9 +7,8 @@ password VARCHAR(3000) NOT NULL,
 name VARCHAR(50) NOT NULL,
 birth VARCHAR(100),
 phone VARCHAR(100),
-voucher_id INT,
-created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-FOREIGN KEY (voucher_id) REFERENCES vouchers (id)
+profile_image varchar(2000),
+created_at TIMESTAMP NOT NULL DEFAULT NOW()
 )
 
 -- migrate:down
