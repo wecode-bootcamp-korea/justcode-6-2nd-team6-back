@@ -146,13 +146,13 @@ CREATE TABLE `genres` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `like_songs` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `character_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `song_id` int NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `character_id` (`character_id`),
+  KEY `user_id` (`user_id`),
   KEY `song_id` (`song_id`),
-  CONSTRAINT `like_songs_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `user_characters` (`id`),
+  CONSTRAINT `like_songs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `like_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -195,17 +195,17 @@ CREATE TABLE `memberships` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `play_counts` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `character_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `song_id` int NOT NULL,
   `play_count` int NOT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `character_id` (`character_id`),
+  KEY `user_id` (`user_id`),
   KEY `song_id` (`song_id`),
-  CONSTRAINT `play_counts_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `user_characters` (`id`),
+  CONSTRAINT `play_counts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `play_counts_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,7 +216,7 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `playlistdetail` AS SELECT
  1 AS `playlistId`,
- 1 AS `characterId`,
+ 1 AS `userId`,
  1 AS `playlistTitle`,
  1 AS `playlistSongsCount`,
  1 AS `createdDate`,
@@ -232,12 +232,12 @@ SET character_set_client = @saved_cs_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `playlists` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `character_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `name` varchar(5000) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `character_id` (`character_id`),
-  CONSTRAINT `playlists_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `user_characters` (`id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `playlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -252,7 +252,7 @@ CREATE TABLE `playlists_songs` (
   `playlist_id` int NOT NULL,
   `song_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `playlist_id` (`playlist_id`),
+  UNIQUE KEY `PK_playlists_songs_playlist_id_song_id` (`playlist_id`,`song_id`),
   KEY `song_id` (`song_id`),
   CONSTRAINT `playlists_songs_ibfk_1` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`),
   CONSTRAINT `playlists_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
@@ -304,6 +304,27 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `purchase`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `purchase` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `voucher_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `payment` varchar(20) DEFAULT NULL,
+  `pay_with` varchar(30) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `voucher_id` (`voucher_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `purchase_ibfk_1` FOREIGN KEY (`voucher_id`) REFERENCES `vouchers` (`id`),
+  CONSTRAINT `purchase_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `release_companies`
 --
 
@@ -325,13 +346,13 @@ CREATE TABLE `release_companies` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reviews` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `character_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `comment` varchar(3000) NOT NULL,
   `playlist_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `character_id` (`character_id`),
+  KEY `user_id` (`user_id`),
   KEY `playlist_id` (`playlist_id`),
-  CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `user_characters` (`id`),
+  CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -403,23 +424,6 @@ CREATE TABLE `songs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `user_characters`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_characters` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `name` varchar(3000) NOT NULL,
-  `profile_image` varchar(2000) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `user_characters_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `users`
 --
 
@@ -432,12 +436,10 @@ CREATE TABLE `users` (
   `name` varchar(50) NOT NULL,
   `birth` varchar(100) DEFAULT NULL,
   `phone` varchar(100) DEFAULT NULL,
-  `voucher_id` int DEFAULT NULL,
+  `profile_image` varchar(2000) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  KEY `voucher_id` (`voucher_id`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`voucher_id`) REFERENCES `vouchers` (`id`)
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -550,7 +552,7 @@ CREATE TABLE `vouchers` (
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `playlistdetail` AS select `p`.`id` AS `playlistId`,`p`.`character_id` AS `characterId`,`p`.`name` AS `playlistTitle`,`psc`.`playlistSongsCount` AS `playlistSongsCount`,`p`.`created_at` AS `createdDate`,`s`.`id` AS `songId`,`a`.`album_image` AS `albumImage` from (((((`playlists` `p` left join `playlists_songs` `ps` on((`ps`.`playlist_id` = `p`.`id`))) left join `songs` `s` on((`ps`.`song_id` = `s`.`id`))) left join `playlistsongscount` `psc` on((`p`.`id` = `psc`.`playlistId`))) left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) group by `p`.`id` order by `p`.`id` */;
+/*!50001 VIEW `playlistdetail` AS select `p`.`id` AS `playlistId`,`p`.`user_id` AS `userId`,`p`.`name` AS `playlistTitle`,`psc`.`playlistSongsCount` AS `playlistSongsCount`,`p`.`created_at` AS `createdDate`,`s`.`id` AS `songId`,`a`.`album_image` AS `albumImage` from (((((`playlists` `p` left join `playlists_songs` `ps` on((`ps`.`playlist_id` = `p`.`id`))) left join `songs` `s` on((`ps`.`song_id` = `s`.`id`))) left join `playlistsongscount` `psc` on((`p`.`id` = `psc`.`playlistId`))) left join `albums` `a` on((`s`.`album_id` = `a`.`id`))) left join `artists` `ats` on((`a`.`artist_id` = `ats`.`id`))) group by `p`.`id` order by `p`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -662,34 +664,34 @@ CREATE TABLE `vouchers` (
 
 LOCK TABLES `schema_migrations` WRITE;
 INSERT INTO `schema_migrations` (version) VALUES
-  ('20220920070554'),
-  ('20220920070609'),
-  ('20220920070619'),
-  ('20220920070633'),
-  ('20220920070648'),
-  ('20220920070658'),
-  ('20220920070718'),
-  ('20220920070731'),
-  ('20220920070750'),
-  ('20220920070759'),
-  ('20220920070814'),
-  ('20220920070839'),
-  ('20220920070850'),
-  ('20220920070903'),
-  ('20220920070922'),
-  ('20220920071012'),
-  ('20220920071028'),
-  ('20220920071038'),
-  ('20220920071051'),
-  ('20220920071107'),
-  ('20220920071123'),
-  ('20220920071132'),
-  ('20220920071145'),
-  ('20220920071203'),
-  ('20220920071220'),
-  ('20220920071237'),
-  ('20220920071256'),
-  ('20220920071305'),
-  ('20220920071322'),
-  ('20220920072622');
+  ('20220924110344'),
+  ('20220924110357'),
+  ('20220924110404'),
+  ('20220924110415'),
+  ('20220924110420'),
+  ('20220924110428'),
+  ('20220924110444'),
+  ('20220924110452'),
+  ('20220924110457'),
+  ('20220924110534'),
+  ('20220924110542'),
+  ('20220924110551'),
+  ('20220924110601'),
+  ('20220924110608'),
+  ('20220924110619'),
+  ('20220924110644'),
+  ('20220924110654'),
+  ('20220924110707'),
+  ('20220924110714'),
+  ('20220924110719'),
+  ('20220924110727'),
+  ('20220924110741'),
+  ('20220924110750'),
+  ('20220924110755'),
+  ('20220924110801'),
+  ('20220924110810'),
+  ('20220924110818'),
+  ('20220924110829'),
+  ('20220924110844'),
+  ('20220924110853');
 UNLOCK TABLES;

@@ -52,23 +52,12 @@ const getAlbumTracklistByAlbumId = async (albumId) => {
 };
 
 const getUserIdByplaylistId = async (playlistId) => {
-  const characterId = Object.values(
-    JSON.parse(
-      JSON.stringify(
-        await myDataSource.query(
-          `SELECT character_id FROM playlists WHERE id = ?`,
-          [playlistId],
-        ),
-      ),
-    ),
-  )[0].character_id;
   const userId = Object.values(
     JSON.parse(
       JSON.stringify(
-        await myDataSource.query(
-          `SELECT user_id FROM user_characters WHERE id = ?`,
-          [characterId],
-        ),
+        await myDataSource.query(`SELECT user_id FROM playlists WHERE id = ?`, [
+          playlistId,
+        ]),
       ),
     ),
   )[0].user_id;
