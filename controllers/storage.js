@@ -26,11 +26,6 @@ const createPlaylist = async (req, res) => {
     return;
   }
 
-  if (!characterId) {
-    res.status(400).json({ message: "KEY_ERROR" });
-    return;
-  }
-
   try {
     const playlist = await storageService.createPlaylist(id, title);
     res.status(201).json({ data: playlist });
