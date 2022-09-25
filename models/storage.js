@@ -1,31 +1,31 @@
 const { myDataSource } = require("./typeorm-client");
 
 //유저 플리 조회
-// const getUserPlaylist = async (userId) => {
-//   await myDataSource.query(
-//     `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
-//   );
-//   const userPlaylist = await myDataSource.query(
-//     `SELECT
-//       p.user_id,
-//       p.id AS playlistId,
-//       p.name AS title,
-//       count(s.id) AS songTotalCount,
-//       b.album_image,
-//       DATE_FORMAT(p.created_at, '%Y.%m.%d') AS created_at
-//     FROM playlists p
-//     JOIN playlists_songs s ON s.playlist_id = p.id
-//     JOIN (
-//       SELECT songs.id, a.album_image
-//       FROM songs
-//       JOIN albums a ON a.id = songs.album_id
-//       ) b ON s.song_id = b.id
-//     WHERE p.user_id = ?
-//     GROUP BY p.id`,
-//     [userId],
-//   );
-//   return userPlaylist;
-// };
+const getUserPlaylist = async (userId) => {
+  await myDataSource.query(
+    `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
+  );
+  const userPlaylist = await myDataSource.query(
+    `SELECT
+      p.user_id,
+      p.id AS playlistId,
+      p.name AS title,
+      count(s.id) AS songTotalCount,
+      b.album_image,
+      DATE_FORMAT(p.created_at, '%Y.%m.%d') AS created_at
+    FROM playlists p
+    JOIN playlists_songs s ON s.playlist_id = p.id
+    JOIN (
+      SELECT songs.id, a.album_image
+      FROM songs
+      JOIN albums a ON a.id = songs.album_id
+      ) b ON s.song_id = b.id
+    WHERE p.user_id = ?
+    GROUP BY p.id`,
+    [userId],
+  );
+  return userPlaylist;
+};
 
 //플리 추가
 const createPlaylist = async (userId, title) => {
@@ -80,27 +80,6 @@ const deletePlaylist = async (playlistOrSong) => {
   return await myDataSource.query(`${playlistOrSong}`);
 };
 
-const getMyListByUserId = async (userId) => {
-  await myDataSource.query(
-    `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
-  );
-  const result = await myDataSource.query(
-    `SELECT 
-    p.id AS playlistId,
-    p.name AS playlistTitle, 
-    psc.playlistSongsCount AS playlistSongsCount,
-    DATE_FORMAT(p.created_at, '%Y.%m.%d') AS createdDate, 
-    ps.albumImage AS albumCover 
-    FROM playlists AS p
-    LEFT JOIN playlistSongs AS ps ON ps.playlistId = p.id
-    LEFT JOIN playlistSongsCount AS psc ON psc.playlistId = p.id
-    WHERE id = ?
-    GROUP BY playlistId`,
-    [userId],
-  );
-  return result;
-};
-
 const getLikedSongsByUserId = async (userId) => {
   const result = await myDataSource.query(
     `SELECT 
@@ -152,12 +131,11 @@ const getRecentListenByUserId = async (userId) => {
 };
 
 module.exports = {
-  //getUserPlaylist,
+  getUserPlaylist,
   createPlaylist,
   createPlaylistSongs,
   editPlaylistTitle,
   deletePlaylist,
-  getMyListByUserId,
   getLikedSongsByUserId,
   getMostListenByUserId,
   getRecentListenByUserId,
