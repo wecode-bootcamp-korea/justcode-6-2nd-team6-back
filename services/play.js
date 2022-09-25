@@ -15,19 +15,30 @@ const getUserId = async (token) => {
   return userId;
 };
 
+const getPlaylistSongsData = async (userId, playlistId) => {
+  await playDao.isUserPlaylistVaild(userId, playlistId);
+  const result = await playDao.getPlaylistSongsDataById(playlistId);
+  return result;
+};
+
 const isLiked = async (userId, songId) => {
   const result = await playDao.isLiked(userId, songId);
   return result;
 };
 
-const getSongData = async (id) => {
-  await playDao.isSongIdVaild(id);
-  const result = await playDao.getSongDataById(id);
+const getSongData = async (songId, token) => {
+  await playDao.isSongIdVaild(songId);
+  if (token) {
+    const userId = await getUserId(token);
+    await playDao.updatePlayCount(userId, songId);
+  }
+  const result = await playDao.getSongDataById(songId);
   return result;
 };
 
 module.exports = {
   getUserId,
+  getPlaylistSongsData,
   isLiked,
   getSongData,
 };
