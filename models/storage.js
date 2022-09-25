@@ -6,7 +6,7 @@ const getUserPlaylist = async (userId) => {
     `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
   );
   const userPlaylist = await myDataSource.query(
-    `SELECT 
+    `SELECT
       p.user_id,
       p.id AS playlistId,
       p.name AS title,
@@ -15,8 +15,8 @@ const getUserPlaylist = async (userId) => {
       DATE_FORMAT(p.created_at, '%Y.%m.%d') AS created_at
     FROM playlists p
     JOIN playlists_songs s ON s.playlist_id = p.id
-    JOIN ( 
-      SELECT songs.id, a.album_image 
+    JOIN (
+      SELECT songs.id, a.album_image
       FROM songs
       JOIN albums a ON a.id = songs.album_id
       ) b ON s.song_id = b.id
@@ -80,10 +80,63 @@ const deletePlaylist = async (playlistOrSong) => {
   return await myDataSource.query(`${playlistOrSong}`);
 };
 
+const getLikedSongsByUserId = async (userId) => {
+  const result = await myDataSource.query(
+    `SELECT 
+    sd.id AS songId,
+    sd.songTitle AS songTitle,
+    sd.songArtist AS songArtist,
+    sd.albumTitle AS albumTitle,
+    sd.albumCover AS albumCover
+    FROM like_songs AS ls
+    LEFT JOIN songdetail AS sd ON sd.id = ls.song_id
+    WHERE ls.user_id = ?`,
+    [userId],
+  );
+  return result;
+};
+
+const getMostListenByUserId = async (userId) => {
+  const result = await myDataSource.query(
+    `SELECT 
+    sd.id AS songId,
+    sd.songTitle AS songTitle,
+    sd.songArtist AS songArtist,
+    sd.albumTitle AS albumTitle,
+    sd.albumCover AS albumCover
+    FROM play_counts AS pc
+    LEFT JOIN songdetail AS sd ON sd.id = pc.song_id
+    WHERE pc.user_id = ?
+    ORDER BY pc.play_count DESC`,
+    [userId],
+  );
+  return result;
+};
+
+const getRecentListenByUserId = async (userId) => {
+  const result = await myDataSource.query(
+    `SELECT 
+    sd.id AS songId,
+    sd.songTitle AS songTitle,
+    sd.songArtist AS songArtist,
+    sd.albumTitle AS albumTitle,
+    sd.albumCover AS albumCover
+    FROM play_counts AS pc
+    LEFT JOIN songdetail AS sd ON sd.id = pc.song_id
+    WHERE pc.user_id = ?
+    ORDER BY pc.updated_at DESC`,
+    [userId],
+  );
+  return result;
+};
+
 module.exports = {
   getUserPlaylist,
   createPlaylist,
   createPlaylistSongs,
   editPlaylistTitle,
   deletePlaylist,
+  getLikedSongsByUserId,
+  getMostListenByUserId,
+  getRecentListenByUserId,
 };
