@@ -7,7 +7,7 @@ const getUserPlaylist = async (userId) => {
   );
   const userPlaylist = await myDataSource.query(
     `SELECT
-      p.user_id,
+      p.user_id AS userId,
       p.id AS playlistId,
       p.name AS title,
       count(s.id) AS songTotalCount,

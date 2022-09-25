@@ -28,7 +28,7 @@ const getUserVouchers = async (req, res) => {
 };
 
 const purchaseVoucher = async (req, res) => {
-  const { voucherId, payment, payWith } = req.body;
+  const { voucherId, payment, payWith, paymentType } = req.body;
   const { id } = req.findUser;
 
   if (!id) {
@@ -42,7 +42,13 @@ const purchaseVoucher = async (req, res) => {
   }
 
   try {
-    await purchaseService.purchaseVoucher(voucherId, id, payment, payWith);
+    await purchaseService.purchaseVoucher(
+      voucherId,
+      id,
+      payment,
+      payWith,
+      paymentType,
+    );
     res.status(200).json({ message: "PURCHASE_SUCCESS" });
   } catch (err) {
     console.log(err);
