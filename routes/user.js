@@ -14,10 +14,4 @@ router.get("/logout", async (req, res) => {
   res.redirect("/login");
 });
 
-router.get(
-  "/character",
-  validateToken.validateToken,
-  userController.getUserCharacter,
-);
-
 module.exports = router;

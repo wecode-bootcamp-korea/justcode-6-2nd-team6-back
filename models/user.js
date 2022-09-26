@@ -34,7 +34,7 @@ const userExisted = async (phone) => {
 
 const selectUser = async (email) => {
   const [selectUser] = await myDataSource.query(
-    `SELECT id, email, password
+    `SELECT *
     FROM users
     WHERE email = ?`,
     [email],
@@ -42,13 +42,12 @@ const selectUser = async (email) => {
   return selectUser;
 };
 
-const getUserCharacter = async (userId) => {
+const getUser = async (email) => {
   const selectUser = await myDataSource.query(
-    `SELECT u.id, c.name, c.profile_image
+    `SELECT name, profile_image AS profileImage
     FROM users u
-    JOIN user_characters c ON c.user_id = u.id
-    WHERE u.id = ?`,
-    [userId],
+    WHERE email = ?`,
+    [email],
   );
   return selectUser;
 };
@@ -57,5 +56,5 @@ module.exports = {
   createUser,
   userExisted,
   selectUser,
-  getUserCharacter,
+  getUser,
 };

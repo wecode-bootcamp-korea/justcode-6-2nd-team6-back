@@ -62,25 +62,11 @@ const userLogin = async (req, res) => {
 
   try {
     const token = await userService.userLogin(email, password);
-    res.status(200).json({ message: "LOGIN_SUCCESS", token: token });
+    const selectUser = await userService.getUser(email);
+    res
+      .status(200)
+      .json({ message: "LOGIN_SUCCESS", data: selectUser, token: token });
   } catch (err) {
-    res.status(err.statusCode || 500).json({ err: err.message });
-  }
-};
-
-const getUserCharacter = async (req, res) => {
-  const { id } = req.findUser;
-
-  if (!id) {
-    res.status(401).json({ message: "NEED_LOGIN" });
-    return;
-  }
-
-  try {
-    const user = await userService.getUserCharacter(id);
-    res.status(200).json({ data: user });
-  } catch (err) {
-    console.log(err);
     res.status(err.statusCode || 500).json({ err: err.message });
   }
 };
@@ -91,5 +77,4 @@ module.exports = {
   userVerification,
   userExisted,
   userLogin,
-  getUserCharacter,
 };

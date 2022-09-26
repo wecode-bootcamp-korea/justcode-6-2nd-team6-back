@@ -105,7 +105,7 @@ const userLogin = async (email, password) => {
   const comparePw = bcrypt.compareSync(password, selectUser.password);
 
   if (comparePw) {
-    const token = jwt.sign({ userEmail: selectUser.email }, SECRET_KEY, {
+    const token = jwt.sign({ userEmail: selectUser.id }, SECRET_KEY, {
       expiresIn: "1d",
     });
     return token;
@@ -116,8 +116,8 @@ const userLogin = async (email, password) => {
   }
 };
 
-const getUserCharacter = async (userId) => {
-  return await userDao.getUserCharacter(userId);
+const getUser = async (email) => {
+  return await userDao.getUser(email);
 };
 
 module.exports = {
@@ -126,5 +126,5 @@ module.exports = {
   userVerification,
   userExisted,
   userLogin,
-  getUserCharacter,
+  getUser,
 };
