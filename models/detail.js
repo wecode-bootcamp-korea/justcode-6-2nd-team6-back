@@ -185,7 +185,9 @@ const getArtistAlbumsByArtistId = async (
 const createPlaylistSongs = async (playlistId, songId) => {
   const playlist = await myDataSource.query(
     `INSERT INTO playlists_songs (playlist_id, song_id)
-      VALUES (?, ?)`,
+    VALUES ${songId
+      .map((sID) => "(" + playlistId + "," + sID + ")")
+      .join(",")}`,
     [playlistId, songId],
   );
   return playlist;
@@ -206,7 +208,9 @@ const editPlaylistTitle = async (newTitle, playlistId) => {
 const deletePlaylistSong = async (playlistId, songId) => {
   return await myDataSource.query(
     `DELETE FROM playlists_songs 
-    WHERE playlist_id = ? AND song_id = ?`,
+    WHERE playlist_id = ? AND song_id IN (${songId
+      .map((sID) => sID)
+      .join(",")})`,
     [playlistId, songId],
   );
 };

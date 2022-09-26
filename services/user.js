@@ -105,7 +105,7 @@ const userLogin = async (email, password) => {
   const comparePw = bcrypt.compareSync(password, selectUser.password);
 
   if (comparePw) {
-    const token = jwt.sign({ userEmail: selectUser.id }, SECRET_KEY, {
+    const token = jwt.sign({ userId: selectUser.id }, SECRET_KEY, {
       expiresIn: "1d",
     });
     return token;

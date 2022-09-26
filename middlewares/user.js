@@ -1,4 +1,4 @@
-const { selectUser } = require("../models/user");
+const { userLogin } = require("../services/user");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
 
@@ -11,8 +11,8 @@ const validateToken = async (req, res, next) => {
       return;
     }
 
-    const userId = jwt.verify(access_token, SECRET_KEY);
-    const findUser = await selectUser(userId.userEmail);
+    const findUser = jwt.verify(access_token, SECRET_KEY);
+    //const findUser = await selectUser(userId.userEmail);
 
     if (!findUser) {
       return res.status(404).json({ message: "USER_NOT_FOUND" });
