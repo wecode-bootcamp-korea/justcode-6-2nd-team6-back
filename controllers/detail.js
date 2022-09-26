@@ -118,11 +118,11 @@ const getArtistDetail = async (req, res) => {
 };
 
 const createPlaylistSongs = async (req, res) => {
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
   const playlistId = req.params.id;
   const { songId } = req.body;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
@@ -142,11 +142,11 @@ const createPlaylistSongs = async (req, res) => {
 };
 
 const editPlaylistTitle = async (req, res) => {
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
   const playlistId = req.params.id;
   const { newTitle } = req.body;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
@@ -166,11 +166,11 @@ const editPlaylistTitle = async (req, res) => {
 };
 
 const deletePlaylistSong = async (req, res) => {
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
   const playlistId = req.params.id;
   const { songId } = req.body;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
