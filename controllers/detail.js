@@ -117,10 +117,85 @@ const getArtistDetail = async (req, res) => {
   }
 };
 
+const createPlaylistSongs = async (req, res) => {
+  const { id } = req.findUser;
+  const playlistId = req.params.id;
+  const { songId } = req.body;
+
+  if (!id) {
+    res.status(401).json({ message: "NEED_LOGIN" });
+    return;
+  }
+
+  if (!playlistId || !songId) {
+    res.status(400).json({ message: "KEY_ERROR" });
+    return;
+  }
+
+  try {
+    await detailService.createPlaylistSongs(playlistId, songId);
+    res.status(201).json({ message: "PLAYLIST_SONGS_CREATED" });
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
+const editPlaylistTitle = async (req, res) => {
+  const { id } = req.findUser;
+  const playlistId = req.params.id;
+  const { newTitle } = req.body;
+
+  if (!id) {
+    res.status(401).json({ message: "NEED_LOGIN" });
+    return;
+  }
+
+  if (!newTitle) {
+    res.status(400).json({ message: "KEY_ERROR" });
+    return;
+  }
+
+  try {
+    await detailService.editPlaylistTitle(newTitle, playlistId);
+    res.status(201).json({ message: "TITLE_EDIT_SUCCESS" });
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
+const deletePlaylistSong = async (req, res) => {
+  const { id } = req.findUser;
+  const playlistId = req.params.id;
+  const { songId } = req.body;
+
+  if (!id) {
+    res.status(401).json({ message: "NEED_LOGIN" });
+    return;
+  }
+
+  if (!(playlistId || songId)) {
+    res.status(400).json({ message: "KEY_ERROR" });
+    return;
+  }
+
+  try {
+    await detailService.deletePlaylistSong(playlistId, songId);
+    res.status(204).json({ message: "PLAYLIST_DELETED" });
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
 module.exports = {
   getTrackDetail,
   getAlbumDetail,
   getPlaylistDetail,
   getMylistDetail,
   getArtistDetail,
+  createPlaylistSongs,
+  editPlaylistTitle,
+  deletePlaylistSong,
 };

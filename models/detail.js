@@ -181,6 +181,36 @@ const getArtistAlbumsByArtistId = async (
   return result;
 };
 
+//플리 곡 추가
+const createPlaylistSongs = async (playlistId, songId) => {
+  const playlist = await myDataSource.query(
+    `INSERT INTO playlists_songs (playlist_id, song_id)
+      VALUES (?, ?)`,
+    [playlistId, songId],
+  );
+  return playlist;
+};
+
+//타이틀 수정
+const editPlaylistTitle = async (newTitle, playlistId) => {
+  const playlist = await myDataSource.query(
+    `UPDATE playlists
+    SET name = ?
+    WHERE id = ?`,
+    [newTitle, playlistId],
+  );
+  return playlist;
+};
+
+//플리 곡 삭제
+const deletePlaylistSong = async (playlistId, songId) => {
+  return await myDataSource.query(
+    `DELETE FROM playlists_songs 
+    WHERE playlist_id = ? AND song_id = ?`,
+    [playlistId, songId],
+  );
+};
+
 module.exports = {
   isIdVaild,
   getTrackDetailBysongId,
@@ -190,4 +220,7 @@ module.exports = {
   getPlaylistDetailByPlaylistId,
   getArtistSongsByArtistId,
   getArtistAlbumsByArtistId,
+  createPlaylistSongs,
+  editPlaylistTitle,
+  deletePlaylistSong,
 };

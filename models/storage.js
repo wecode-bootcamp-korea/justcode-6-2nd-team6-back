@@ -11,8 +11,8 @@ const getUserPlaylist = async (userId) => {
       p.id AS playlistId,
       p.name AS title,
       count(s.id) AS songTotalCount,
-      b.album_image,
-      DATE_FORMAT(p.created_at, '%Y.%m.%d') AS created_at
+      b.album_image AS albumImage,
+      DATE_FORMAT(p.created_at, '%Y.%m.%d') AS createdAt
     FROM playlists p
     JOIN playlists_songs s ON s.playlist_id = p.id
     JOIN (
@@ -36,9 +36,10 @@ const createPlaylist = async (userId, title) => {
   );
   const playlist = await myDataSource.query(
     `SELECT 
-    id AS playlistId,
-    user_id,
-    name AS title
+      id AS playlistId,
+      user_id AS userId,
+      name AS title,
+      DATE_FORMAT(created_at, '%Y.%m.%d') AS createdAt
     FROM playlists 
     WHERE user_id = ?
     ORDER BY created_at DESC 
@@ -48,36 +49,11 @@ const createPlaylist = async (userId, title) => {
   return playlist;
 };
 
-//플리 곡 추가
-const createPlaylistSongs = async (playlistId, songId) => {
-  const playlist = await myDataSource.query(
-    `INSERT INTO playlists_songs (playlist_id, song_id)
-      VALUES (?, ?)`,
-    [playlistId, songId],
-  );
-  return playlist;
-};
-
-//타이틀 수정
-const editPlaylistTitle = async (newTitle, playlistId) => {
-  const playlist = await myDataSource.query(
-    `UPDATE playlists
-    SET name = ?
-    WHERE id = ?`,
-    [newTitle, playlistId],
-  );
-  /* const playlist = await myDataSource.query(
-    `SELECT *
-    FROM playlists
-    WHERE id = ?`,
-    [playlistId],
-  ); */
-  return playlist;
-};
-
-//플리 곡 삭제
-const deletePlaylist = async (playlistOrSong) => {
-  return await myDataSource.query(`${playlistOrSong}`);
+//플리 삭제
+const deletePlaylist = async (playlistId) => {
+  return await myDataSource.query(`DELETE FROM playlists WHERE id = ?`, [
+    playlistId,
+  ]);
 };
 
 const getLikedSongsByUserId = async (userId) => {
@@ -133,8 +109,6 @@ const getRecentListenByUserId = async (userId) => {
 module.exports = {
   getUserPlaylist,
   createPlaylist,
-  createPlaylistSongs,
-  editPlaylistTitle,
   deletePlaylist,
   getLikedSongsByUserId,
   getMostListenByUserId,
