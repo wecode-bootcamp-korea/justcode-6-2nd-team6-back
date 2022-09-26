@@ -35,7 +35,7 @@ const getPlaylistSilde = async (result) => {
       [playlistArr[i]],
     );
     tempObj.songsData = await myDataSource.query(
-      `SELECT  albumImage, songTitle, artist FROM playlistSlide WHERE playlistId = ? LIMIT 8`,
+      `SELECT  songId, albumImage, songTitle, artist FROM playlistSlide WHERE playlistId = ? LIMIT 8`,
       [playlistArr[i]],
     );
     slideData.push(tempObj);
@@ -52,7 +52,8 @@ const getRecentReleasedAlbums = async (result) => {
      a.release_date AS releaseDate,
      ats.id AS artistId,
      ats.name AS artist,
-     ats.scope AS scope 
+     ats.scope AS scope,
+     a.album_image AS albumCover
      FROM albums AS a
      LEFT JOIN songs AS s ON s.album_id = a.id
      LEFT JOIN artists AS ats ON a.artist_id = ats.id

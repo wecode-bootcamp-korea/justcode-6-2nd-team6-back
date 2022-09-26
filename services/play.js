@@ -15,30 +15,42 @@ const getUserId = async (token) => {
   return userId;
 };
 
+const canPlay = async (userId) => {
+  const result = await playDao.hasVoucher(userId);
+  return result;
+};
+
 const getPlaylistSongsData = async (userId, playlistId) => {
   await playDao.isUserPlaylistVaild(userId, playlistId);
   const result = await playDao.getPlaylistSongsDataById(playlistId);
   return result;
 };
 
-const isLiked = async (userId, songId) => {
-  const result = await playDao.isLiked(userId, songId);
+const getArtistSongsData = async (songId) => {
+  await playDao.isSongIdVaild(songId);
+  const result = await playDao.getArtistSongsDataBySongId(songId);
   return result;
 };
 
-const getSongData = async (songId, token) => {
+const getGenreSongsData = async (songId) => {
   await playDao.isSongIdVaild(songId);
-  if (token) {
-    const userId = await getUserId(token);
-    await playDao.updatePlayCount(userId, songId);
-  }
-  const result = await playDao.getSongDataById(songId);
+  const result = await playDao.getGenreSongsDataBySongId(songId);
+  return result;
+};
+
+const play = async (songId, token) => {
+  await playDao.isSongIdVaild(songId);
+  const userId = await getUserId(token);
+  await playDao.updatePlayCount(userId, songId);
+  const result = await playDao.isLiked(userId, songId);
   return result;
 };
 
 module.exports = {
   getUserId,
+  canPlay,
+  getArtistSongsData,
+  getGenreSongsData,
   getPlaylistSongsData,
-  isLiked,
-  getSongData,
+  play,
 };
