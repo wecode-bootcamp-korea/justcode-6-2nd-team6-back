@@ -1,27 +1,21 @@
-const { selectUser } = require("../models/user");
+const { userLogin } = require("../services/user");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
 
 const validateToken = async (req, res, next) => {
+  const access_token = req.headers["authorization"];
+
+  if (!access_token) {
+    res.status(400).json({ error: "TOKEN_NOT_VERIFIED" });
+    return;
+  }
+
   try {
-    const access_token = req.headers["authorization"];
-
-    if (!access_token) {
-      res.status(400).json({ error: "TOKEN_NOT_VERIFIED" });
-      return;
-    }
-
-    const userId = jwt.verify(access_token, SECRET_KEY);
-    const findUser = await selectUser(userId.userEmail);
-
-    if (!findUser) {
-      return res.status(404).json({ message: "USER_NOT_FOUND" });
-    }
+    const findUser = jwt.verify(access_token, SECRET_KEY);
     req.findUser = findUser;
     next();
   } catch (err) {
-    console.log(err);
-    res.status(400).json({ message: "TOKEN_EXPIRED" });
+    return res.status(404).json({ message: "USER_NOT_FOUND" });
   }
 };
 

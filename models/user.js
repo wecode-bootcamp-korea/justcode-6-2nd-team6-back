@@ -1,11 +1,18 @@
 const { myDataSource } = require("./typeorm-client");
 
-const createUser = async (email, hashedPw, name, phone, birth) => {
+const createUser = async (
+  email,
+  hashedPw,
+  name,
+  phone,
+  birth,
+  profileImage,
+) => {
   const user = await myDataSource.query(
     `INSERT INTO 
-     users(email, password, name, phone, birth)
-     VALUES (?, ?, ?, ?, ?)`,
-    [email, hashedPw, name, phone, birth],
+     users(email, password, name, phone, birth, profile_image)
+     VALUES (?, ?, ?, ?, ?, "https://cdn.pixabay.com/photo/2022/02/20/22/11/background-7025417_1280.png")`,
+    [email, hashedPw, name, phone, birth, profileImage],
   );
   /* 
   const user = await myDataSource.query(

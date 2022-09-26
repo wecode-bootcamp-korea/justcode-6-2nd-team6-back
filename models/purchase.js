@@ -7,7 +7,7 @@ const getVouchers = async () => {
       v.id AS voucherId,
       v.name AS voucherName,
       v.description AS description,
-      JSON_OBJECT(
+      JSON_ARRAY(
         "regular", 
           JSON_ARRAYAGG(
             JSON_OBJECT(

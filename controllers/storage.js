@@ -1,15 +1,15 @@
 const storageService = require("../services/storage");
 
 const getUserPlaylist = async (req, res) => {
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
 
   try {
-    const playlist = await storageService.getUserPlaylist(id);
+    const playlist = await storageService.getUserPlaylist(userId);
     res.status(201).json({ data: playlist });
   } catch (err) {
     console.log(err);
@@ -18,16 +18,16 @@ const getUserPlaylist = async (req, res) => {
 };
 
 const createPlaylist = async (req, res) => {
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
   const { title } = req.body;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
 
   try {
-    const playlist = await storageService.createPlaylist(id, title);
+    const playlist = await storageService.createPlaylist(userId, title);
     res.status(201).json({ data: playlist });
   } catch (err) {
     console.log(err);
@@ -36,10 +36,10 @@ const createPlaylist = async (req, res) => {
 };
 
 const deletePlaylist = async (req, res) => {
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
   const { playlistId } = req.body;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }

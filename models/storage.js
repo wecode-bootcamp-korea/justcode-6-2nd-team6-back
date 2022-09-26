@@ -51,9 +51,13 @@ const createPlaylist = async (userId, title) => {
 
 //플리 삭제
 const deletePlaylist = async (playlistId) => {
-  return await myDataSource.query(`DELETE FROM playlists WHERE id = ?`, [
-    playlistId,
-  ]);
+  return await myDataSource.query(
+    `
+  DELETE FROM playlists WHERE id IN (${playlistId
+    .map((pID) => pID)
+    .join(",")})`,
+    [playlistId],
+  );
 };
 
 const getLikedSongsByUserId = async (userId) => {

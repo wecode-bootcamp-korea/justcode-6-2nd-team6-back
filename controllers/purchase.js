@@ -11,15 +11,15 @@ const getVouchers = async (req, res) => {
 };
 
 const getUserVouchers = async (req, res) => {
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
 
   try {
-    const vouchers = await purchaseService.getUserVouchers(id);
+    const vouchers = await purchaseService.getUserVouchers(userId);
     res.status(200).json({ data: vouchers });
   } catch (err) {
     console.log(err);
@@ -29,9 +29,9 @@ const getUserVouchers = async (req, res) => {
 
 const purchaseVoucher = async (req, res) => {
   const { voucherId, payment, payWith, paymentType } = req.body;
-  const { id } = req.findUser;
+  const { userId } = req.findUser;
 
-  if (!id) {
+  if (!userId) {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
@@ -44,7 +44,7 @@ const purchaseVoucher = async (req, res) => {
   try {
     await purchaseService.purchaseVoucher(
       voucherId,
-      id,
+      userId,
       payment,
       payWith,
       paymentType,
