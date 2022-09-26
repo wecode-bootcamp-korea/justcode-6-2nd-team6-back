@@ -139,6 +139,30 @@ const getGenreSongsDataBySongId = async (songId) => {
   return result;
 };
 
+//재생목록에 한 곡 추가
+const getSongDataBySongId = async (songId) => {
+  const result = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT
+    s.id AS songId,
+    s.name AS songTitle,
+    s.content AS content,
+    ats.name AS artist,
+    a.album_image AS albumCover
+    FROM songs AS s
+    LEFT JOIN albums AS a ON s.album_id = a.id
+    LEFT JOIN artists AS ats ON a.artist_id = ats.id
+    WHERE s.id = ?;`,
+          [songId],
+        ),
+      ),
+    ),
+  );
+  return result;
+};
+
 //재생시 카운트 추가
 const updatePlayCount = async (userId, songId) => {
   const isExist = Object.values(
@@ -188,6 +212,7 @@ module.exports = {
   getPlaylistSongsDataById,
   getArtistSongsDataBySongId,
   getGenreSongsDataBySongId,
+  getSongDataBySongId,
   isSongIdVaild,
   updatePlayCount,
   isLiked,

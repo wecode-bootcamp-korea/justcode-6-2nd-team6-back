@@ -39,7 +39,7 @@ const getMylistDetail = async (playlistId, token) => {
       error.code = 403;
       throw error;
     } else {
-      userId = decoded.userId;
+      userId = decoded.userEmail; //토큰이메일
     }
   });
   //토큰에서 가져온 유저 아이디가 플레이리스트 소유자와 같을 경우 mylist로 불러오기 / 아닌 경우 접근 권한 에러

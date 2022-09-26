@@ -63,7 +63,6 @@ const likeSong = async (userId, songId) => {
       ),
     ),
   )[0].isExist;
-  console.log("is liked", isLiked);
   if (isLiked == 1) {
     await myDataSource.query(
       `DELETE FROM like_songs WHERE (user_id =? AND song_id = ?)`,
