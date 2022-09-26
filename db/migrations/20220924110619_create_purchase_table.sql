@@ -13,4 +13,4 @@ FOREIGN KEY (user_id) REFERENCES users (id)
 
 -- migrate:down
 
--- DROP TABLE purchase;
+DROP TABLE purchase;

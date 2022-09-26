@@ -120,6 +120,26 @@ const getUser = async (email) => {
   return await userDao.getUser(email);
 };
 
+const getUserId = async (token) => {
+  let userId;
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      let error = new Error("Error: Invaild Access");
+      error.code = 403;
+      throw error;
+    } else {
+      userId = decoded.userId;
+    }
+  });
+  return userId;
+};
+
+const likeSong = async (token, songId) => {
+  const userId = await getUserId(token);
+  const result = await userDao.likeSong(userId, songId);
+  return result;
+};
+
 module.exports = {
   createUser,
   send,
@@ -127,4 +147,5 @@ module.exports = {
   userExisted,
   userLogin,
   getUser,
+  likeSong,
 };

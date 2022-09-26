@@ -52,9 +52,36 @@ const getUser = async (email) => {
   return selectUser;
 };
 
+const likeSong = async (userId, songId) => {
+  const isLiked = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT EXISTS (SELECT * FROM like_songs WHERE (user_id = ? AND song_id = ?)) as isExist`,
+          [userId, songId],
+        ),
+      ),
+    ),
+  )[0].isExist;
+  console.log("is liked", isLiked);
+  if (isLiked == 1) {
+    await myDataSource.query(
+      `DELETE FROM like_songs WHERE (user_id =? AND song_id = ?)`,
+      [userId, songId],
+    );
+  } else {
+    await myDataSource.query(
+      `INSERT like_songs (user_id, song_id) VALUE (?, ?)`,
+      [userId, songId],
+    );
+  }
+  return isLiked;
+};
+
 module.exports = {
   createUser,
   userExisted,
   selectUser,
   getUser,
+  likeSong,
 };

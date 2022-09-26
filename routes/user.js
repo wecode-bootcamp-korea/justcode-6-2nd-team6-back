@@ -13,5 +13,6 @@ router.get("/logout", async (req, res) => {
   req.session.destroy();
   res.redirect("/login");
 });
+router.patch("/like/:id", userController.likeSong);
 
 module.exports = router;
