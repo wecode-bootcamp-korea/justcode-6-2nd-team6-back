@@ -60,15 +60,15 @@ const deletePlaylist = async (req, res) => {
 
 const getStorage = async (req, res) => {
   const page = req.params.page;
-  if (!req.headers.authorization) {
+  if (!req.headers["authorization"]) {
     noToken();
   } else {
     try {
-      const token = req.headers.authorization.substring(7);
+      const token = req.headers["authorization"];
       const userId = await storageService.getuserId(token);
       switch (page) {
         case "liketrack":
-          result = await storageService.getMostListen(userId);
+          result = await storageService.getLikedSongs(userId);
           break;
         case "mostlisten":
           result = await storageService.getMostListen(userId);
@@ -77,7 +77,7 @@ const getStorage = async (req, res) => {
           result = await storageService.getRecentListen(userId);
           break;
         default:
-          res.status(404).json("Not Found");
+          res.status(404).json({ message: "Wrong Direction" });
           break;
       }
       res.status(200).json(result);

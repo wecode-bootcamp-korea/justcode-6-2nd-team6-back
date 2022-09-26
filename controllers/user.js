@@ -72,17 +72,17 @@ const userLogin = async (req, res) => {
 };
 
 const likeSong = async (req, res) => {
-  if (!req.headers.authorization) {
+  if (!req.headers["authorization"]) {
     res.status(200).json({ message: "please_login" });
   } else {
-    const token = req.headers.authorization.substring(7);
+    const token = req.headers["authorization"];
     const songId = req.params.id;
     try {
       const result = await userService.likeSong(token, songId);
       if (result == 1) {
-        res.status(201).json({ message: "좋아요한 곡에 추가되었습니다." });
-      } else {
         res.status(201).json({ message: "좋아요가 취소되었습니다." });
+      } else {
+        res.status(201).json({ message: "좋아요한 곡에 추가되었습니다." });
       }
     } catch (err) {
       res.status(err.statusCode || 500).json({ err: err.message });

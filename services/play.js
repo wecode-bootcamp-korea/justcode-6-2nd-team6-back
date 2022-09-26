@@ -9,7 +9,7 @@ const getUserId = async (token) => {
       error.code = 403;
       throw error;
     } else {
-      userId = decoded.userId;
+      userId = decoded.userEmail; //토큰이메일
     }
   });
   return userId;
@@ -38,6 +38,12 @@ const getGenreSongsData = async (songId) => {
   return result;
 };
 
+const getSongData = async (songId) => {
+  await playDao.isSongIdVaild(songId);
+  const result = await playDao.getSongDataBySongId(songId);
+  return result;
+};
+
 const play = async (songId, token) => {
   await playDao.isSongIdVaild(songId);
   const userId = await getUserId(token);
@@ -52,5 +58,6 @@ module.exports = {
   getArtistSongsData,
   getGenreSongsData,
   getPlaylistSongsData,
+  getSongData,
   play,
 };

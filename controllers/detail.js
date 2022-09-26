@@ -42,7 +42,7 @@ const getPlaylistDetail = async (req, res) => {
 };
 
 const getMylistDetail = async (req, res) => {
-  const token = req.headers.authorization.substring(7);
+  const token = req.headers["authorization"];
   const playlistId = req.params.id;
   try {
     const result = await detailService.getMylistDetail(playlistId, token);
