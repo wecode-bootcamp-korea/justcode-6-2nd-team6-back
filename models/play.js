@@ -91,7 +91,7 @@ const getArtistSongsDataBySongId = async (songId) => {
     s.id AS songId,
     s.name AS songTitle,
     s.content AS content,
-    ats.name AS artist,
+    ats.name AS songArtist,
     a.album_image AS albumCover
     FROM songs AS s
     LEFT JOIN albums AS a ON s.album_id = a.id
@@ -125,7 +125,7 @@ const getGenreSongsDataBySongId = async (songId) => {
     s.id AS songId,
     s.name AS songTitle,
     s.content AS content,
-    ats.name AS artist,
+    ats.name AS songArtist,
     a.album_image AS albumCover
     FROM songs AS s
     LEFT JOIN albums AS a ON s.album_id = a.id
@@ -149,7 +149,7 @@ const getSongDataBySongId = async (songId) => {
     s.id AS songId,
     s.name AS songTitle,
     s.content AS content,
-    ats.name AS artist,
+    ats.name AS songArtist,
     a.album_image AS albumCover
     FROM songs AS s
     LEFT JOIN albums AS a ON s.album_id = a.id

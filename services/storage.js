@@ -22,7 +22,7 @@ const getuserId = async (token) => {
       error.code = 403;
       throw error;
     } else {
-      userId = decoded.userEmail; //토큰이메일
+      userId = decoded.userId;
     }
   });
   return userId;

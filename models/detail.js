@@ -36,9 +36,6 @@ const getAlbumDetailByAlbumId = async (albumId) => {
 };
 
 const getAlbumTracklistByAlbumId = async (albumId) => {
-  await myDataSource.query(
-    `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
-  );
   let result = {};
   result.albumInfo = await myDataSource.query(
     `SELECT id, albumTitle, artist, albumType, albumImage, albumReleaseDate, albumType FROM albumDetail WHERE id = ?`,
@@ -65,10 +62,10 @@ const getUserIdByplaylistId = async (playlistId) => {
 };
 
 const getPlaylistDetailByPlaylistId = async (playlistId) => {
+  let result = {};
   await myDataSource.query(
     `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
   );
-  let result = {};
   result.playlistInfo = await myDataSource.query(
     `SELECT * FROM playlistDetail WHERE playlistId = ?`,
     [playlistId],
@@ -86,10 +83,10 @@ const getArtistSongsByArtistId = async (
   isDESCorASC,
   roleType,
 ) => {
+  let result = {};
   await myDataSource.query(
     `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
   );
-  let result = {};
   result.artistInfo = Object.values(
     JSON.parse(
       JSON.stringify(
@@ -136,10 +133,10 @@ const getArtistAlbumsByArtistId = async (
   isDESCorASC,
   roleType,
 ) => {
+  let result = {};
   await myDataSource.query(
     `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
   );
-  let result = {};
   result.artistInfo = Object.values(
     JSON.parse(
       JSON.stringify(

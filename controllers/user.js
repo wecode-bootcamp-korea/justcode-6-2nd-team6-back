@@ -80,9 +80,11 @@ const likeSong = async (req, res) => {
     try {
       const result = await userService.likeSong(token, songId);
       if (result == 1) {
-        res.status(201).json({ message: "좋아요가 취소되었습니다." });
+        res.status(201).json({ message: "좋아요가 취소되었습니다.", result });
       } else {
-        res.status(201).json({ message: "좋아요한 곡에 추가되었습니다." });
+        res
+          .status(201)
+          .json({ message: "좋아요한 곡에 추가되었습니다.", result });
       }
     } catch (err) {
       res.status(err.statusCode || 500).json({ err: err.message });

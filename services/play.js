@@ -9,9 +9,15 @@ const getUserId = async (token) => {
       error.code = 403;
       throw error;
     } else {
-      userId = decoded.userEmail; //토큰이메일
+      userId = decoded.userId;
     }
   });
+
+  if (!userId) {
+    let error = new Error("Error: 유저 아이디가 없습니다.");
+    error.code = 403;
+    throw error;
+  }
   return userId;
 };
 
