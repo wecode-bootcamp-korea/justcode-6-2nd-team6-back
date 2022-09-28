@@ -60,6 +60,7 @@ const getArtistDetail = async (req, res) => {
   let sortCloumn;
   let isDESCorASC;
   try {
+    let result;
     if (page === "songs") {
       switch (sortType) {
         case "POPULARITY":
@@ -75,9 +76,9 @@ const getArtistDetail = async (req, res) => {
           isDESCorASC = "ASC";
           break;
         default:
-          res.status(404).json("Not Found");
+          break;
       }
-      const result = await detailService.getArtistSongs(
+      result = await detailService.getArtistSongs(
         artistId,
         sortCloumn,
         isDESCorASC,
@@ -99,17 +100,21 @@ const getArtistDetail = async (req, res) => {
           isDESCorASC = "ASC";
           break;
         default:
-          res.status(404).json("Not Found");
+          break;
       }
-      const result = await detailService.getArtistAlbums(
+      result = await detailService.getArtistAlbums(
         artistId,
         sortCloumn,
         isDESCorASC,
         roleType,
       );
       res.status(200).json(result);
+    } else if (!page) {
+      result = await detailService.getArtistSongsAndAlbums(artistId);
+      res.status(200).json(result);
     } else {
       res.status(404).json("Not Found");
+      return;
     }
   } catch (err) {
     console.log(err);

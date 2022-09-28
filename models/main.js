@@ -33,7 +33,6 @@ const getFiveRandomValue = async () => {
 
 const getPlaylistSilde = async (result) => {
   const playlistArr = await getFiveRandomValue();
-  console.log(playlistArr);
   let slideData = [];
   for (let i = 0; i < 5; i++) {
     let tempObj = {};
