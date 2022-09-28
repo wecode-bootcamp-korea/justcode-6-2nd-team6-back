@@ -60,36 +60,36 @@ const deletePlaylist = async (req, res) => {
 
 const getStorage = async (req, res) => {
   const page = req.params.page;
-  if (!req.headers["authorization"]) {
-    noToken();
-  } else {
-    try {
+  try {
+    if (!req.headers["authorization"]) {
+      let error = new Error("Error: please_login");
+      error.code = 200;
+      throw error;
+    } else {
       const token = req.headers["authorization"];
       const userId = await storageService.getuserId(token);
       switch (page) {
         case "liketrack":
           result = await storageService.getLikedSongs(userId);
+          res.status(200).json(result);
           break;
         case "mostlisten":
           result = await storageService.getMostListen(userId);
+          res.status(200).json(result);
           break;
         case "recentlisten":
           result = await storageService.getRecentListen(userId);
+          res.status(200).json(result);
           break;
         default:
           res.status(404).json({ message: "Wrong Direction" });
           break;
       }
-      res.status(200).json(result);
-    } catch (err) {
-      console.log(err);
-      res.status(err.code || 500).json(err.message);
     }
+  } catch (err) {
+    console.log(err);
+    res.status(err.code || 500).json(err.message);
   }
-};
-
-const noToken = async () => {
-  res.status(200).json({ message: "please_login" });
 };
 
 module.exports = {

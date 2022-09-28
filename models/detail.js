@@ -66,13 +66,25 @@ const getPlaylistDetailByPlaylistId = async (playlistId) => {
   await myDataSource.query(
     `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
   );
-  result.playlistInfo = await myDataSource.query(
-    `SELECT * FROM playlistDetail WHERE playlistId = ?`,
-    [playlistId],
+  result.playlistInfo = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT * FROM playlistDetail WHERE playlistId = ?`,
+          [playlistId],
+        ),
+      ),
+    ),
   );
-  result.playlistSongs = await myDataSource.query(
-    `SELECT * FROM playlistSongs WHERE playlistId = ?`,
-    [playlistId],
+  result.playlistSongs = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT * FROM playlistSongs WHERE playlistId = ?`,
+          [playlistId],
+        ),
+      ),
+    ),
   );
   return result;
 };
