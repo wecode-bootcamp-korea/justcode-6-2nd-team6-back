@@ -47,11 +47,11 @@ SET character_set_client = @saved_cs_client;
 CREATE TABLE `albums` (
   `id` int NOT NULL AUTO_INCREMENT,
   `artist_id` int NOT NULL,
-  `name` varchar(3000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(5000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `album_type` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(3000) DEFAULT NULL,
+  `description` varchar(5000) DEFAULT NULL,
+  `album_type` varchar(1000) DEFAULT NULL,
   `release_company_id` int DEFAULT NULL,
-  `album_image` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `album_image` varchar(2000) DEFAULT NULL,
   `release_date` date DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -60,7 +60,7 @@ CREATE TABLE `albums` (
   KEY `release_company_id` (`release_company_id`),
   CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`id`),
   CONSTRAINT `albums_ibfk_2` FOREIGN KEY (`release_company_id`) REFERENCES `release_companies` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,19 +110,19 @@ SET character_set_client = @saved_cs_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `artists` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(3000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(3000) DEFAULT NULL,
   `management_company_id` int NOT NULL,
-  `artist_image` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `artist_image` varchar(2000) DEFAULT NULL,
   `genre_id` int NOT NULL,
-  `artist_type` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `scope` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `artist_type` varchar(1000) DEFAULT NULL,
+  `scope` varchar(30) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `management_company_id` (`management_company_id`),
   KEY `genre_id` (`genre_id`),
   CONSTRAINT `artists_ibfk_1` FOREIGN KEY (`management_company_id`) REFERENCES `management_companies` (`id`),
   CONSTRAINT `artists_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,9 +133,9 @@ CREATE TABLE `artists` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `genres` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(3000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(3000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +154,7 @@ CREATE TABLE `like_songs` (
   KEY `song_id` (`song_id`),
   CONSTRAINT `like_songs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `like_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,10 +165,10 @@ CREATE TABLE `like_songs` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `management_companies` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(2000) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,12 +179,12 @@ CREATE TABLE `management_companies` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `memberships` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(3000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(300) DEFAULT NULL,
+  `description` varchar(3000) DEFAULT NULL,
   `origin_price` decimal(6,3) DEFAULT NULL,
   `benefit_price` decimal(6,3) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +205,7 @@ CREATE TABLE `play_counts` (
   KEY `song_id` (`song_id`),
   CONSTRAINT `play_counts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `play_counts_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,12 +233,12 @@ SET character_set_client = @saved_cs_client;
 CREATE TABLE `playlists` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `name` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(5000) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `playlists_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,9 +254,9 @@ CREATE TABLE `playlists_songs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `PK_playlists_songs_playlist_id_song_id` (`playlist_id`,`song_id`),
   KEY `song_id` (`song_id`),
-  CONSTRAINT `playlists_songs_ibfk_1` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`),
-  CONSTRAINT `playlists_songs_ibfk_2` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `playlists_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`),
+  CONSTRAINT `playlists_songs_ibfk_3` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=290 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,15 +315,16 @@ CREATE TABLE `purchase` (
   `id` int NOT NULL AUTO_INCREMENT,
   `voucher_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `payment` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pay_with` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment` varchar(20) DEFAULT NULL,
+  `pay_with` varchar(30) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `voucher_id` (`voucher_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `purchase_ibfk_1` FOREIGN KEY (`voucher_id`) REFERENCES `vouchers` (`id`),
   CONSTRAINT `purchase_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,10 +335,10 @@ CREATE TABLE `purchase` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `release_companies` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(2000) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,14 +350,14 @@ CREATE TABLE `release_companies` (
 CREATE TABLE `reviews` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `comment` varchar(3000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` varchar(3000) NOT NULL,
   `playlist_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `playlist_id` (`playlist_id`),
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -409,12 +410,12 @@ CREATE TABLE `songs` (
   `id` int NOT NULL AUTO_INCREMENT,
   `track_number` int DEFAULT NULL,
   `album_id` int NOT NULL,
-  `name` varchar(3000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `content` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lyrics_by` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `music_by` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(3000) DEFAULT NULL,
+  `content` varchar(2000) DEFAULT NULL,
+  `lyrics_by` varchar(100) DEFAULT NULL,
+  `music_by` varchar(100) DEFAULT NULL,
   `is_title` tinyint DEFAULT NULL,
-  `lyrics` varchar(5000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lyrics` varchar(5000) DEFAULT NULL,
   `genre_id` int NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -422,7 +423,7 @@ CREATE TABLE `songs` (
   KEY `genre_id` (`genre_id`),
   CONSTRAINT `songs_ibfk_1` FOREIGN KEY (`album_id`) REFERENCES `albums` (`id`),
   CONSTRAINT `songs_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -433,16 +434,16 @@ CREATE TABLE `songs` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(3000) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `birth` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `profile_image` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(3000) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `birth` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `profile_image` varchar(2000) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -453,8 +454,8 @@ CREATE TABLE `users` (
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vouchers` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(3000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(300) NOT NULL,
+  `description` varchar(3000) DEFAULT NULL,
   `origin_price` decimal(6,3) NOT NULL,
   `sale_price` decimal(6,3) DEFAULT NULL,
   `membership_id` int DEFAULT NULL,
@@ -462,11 +463,11 @@ CREATE TABLE `vouchers` (
   PRIMARY KEY (`id`),
   KEY `membership_id` (`membership_id`),
   CONSTRAINT `vouchers_ibfk_1` FOREIGN KEY (`membership_id`) REFERENCES `memberships` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'florida'
+-- Dumping routines for database 'FLOrida'
 --
 
 --
