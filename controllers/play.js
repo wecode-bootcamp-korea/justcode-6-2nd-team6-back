@@ -25,6 +25,15 @@ const getSongsData = async (req, res) => {
           case "song":
             result = await playService.getSongData(id);
             break;
+          case "liketrack":
+            result = await playService.getLikedSongsData(userId);
+            break;
+          case "mostlisten":
+            result = await playService.getMostListenSongsData(userId);
+            break;
+          case "recentlisten":
+            result = await playService.getRecentListenSongsData(userId);
+            break;
           default:
             res.status(404).json("Not Found");
         }
@@ -34,7 +43,7 @@ const getSongsData = async (req, res) => {
       }
     } catch (err) {
       console.log(err);
-      res.status(err.code || 500).json(err.message);
+      res.status(err.code || 500).json({ message: err.message });
     }
   }
 };
@@ -47,7 +56,8 @@ const play = async (req, res) => {
     const songId = req.params.id;
     try {
       const userId = await playService.getUserId(token);
-      const result = await playService.play(songId, token);
+      let result = await playService.play(userId, songId);
+      result.canPlay = await playService.canPlay(userId);
       res.status(200).json(result);
     } catch (err) {
       console.log(err);

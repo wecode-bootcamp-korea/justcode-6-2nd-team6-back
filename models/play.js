@@ -139,6 +139,77 @@ const getGenreSongsDataBySongId = async (songId) => {
   return result;
 };
 
+const getlikedSongsDataByUserId = async (userId) => {
+  const result = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT 
+          sd.id AS songId,
+          sd.songTitle AS songTitle,
+          sd.songArtist AS songArtist,
+          sd.content AS content,
+          sd.albumTitle AS albumTitle,
+          sd.albumCover AS albumCover
+          FROM like_songs AS ls
+          LEFT JOIN songdetail AS sd ON sd.id = ls.song_id
+          WHERE ls.user_id = ?`,
+          [userId],
+        ),
+      ),
+    ),
+  );
+  return result;
+};
+
+const getMostListenSongsDataByUserId = async (userId) => {
+  const result = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT 
+          sd.id AS songId,
+          sd.songTitle AS songTitle,
+          sd.songArtist AS songArtist,
+          sd.content AS content,
+          sd.albumTitle AS albumTitle,
+          sd.albumCover AS albumCover
+          FROM play_counts AS pc
+          LEFT JOIN songdetail AS sd ON sd.id = pc.song_id
+          WHERE pc.user_id = ?
+          ORDER BY pc.play_count DESC`,
+          [userId],
+        ),
+      ),
+    ),
+  );
+  return result;
+};
+
+const getRecentListenSongsDataByUserId = async (userId) => {
+  const result = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT 
+          sd.id AS songId,
+          sd.songTitle AS songTitle,
+          sd.songArtist AS songArtist,
+          sd.content AS content,
+          sd.albumTitle AS albumTitle,
+          sd.albumCover AS albumCover
+          FROM play_counts AS pc
+          LEFT JOIN songdetail AS sd ON sd.id = pc.song_id
+          WHERE pc.user_id = ?
+          ORDER BY pc.updated_at DESC`,
+          [userId],
+        ),
+      ),
+    ),
+  );
+  return result;
+};
+
 //재생목록에 한 곡 추가
 const getSongDataBySongId = async (songId) => {
   const result = Object.values(
@@ -216,4 +287,7 @@ module.exports = {
   isSongIdVaild,
   updatePlayCount,
   isLiked,
+  getlikedSongsDataByUserId,
+  getMostListenSongsDataByUserId,
+  getRecentListenSongsDataByUserId,
 };

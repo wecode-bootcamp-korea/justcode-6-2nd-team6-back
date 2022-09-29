@@ -66,13 +66,25 @@ const getPlaylistDetailByPlaylistId = async (playlistId) => {
   await myDataSource.query(
     `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
   );
-  result.playlistInfo = await myDataSource.query(
-    `SELECT * FROM playlistDetail WHERE playlistId = ?`,
-    [playlistId],
+  result.playlistInfo = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT * FROM playlistDetail WHERE playlistId = ?`,
+          [playlistId],
+        ),
+      ),
+    ),
   );
-  result.playlistSongs = await myDataSource.query(
-    `SELECT * FROM playlistSongs WHERE playlistId = ?`,
-    [playlistId],
+  result.playlistSongs = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT * FROM playlistSongs WHERE playlistId = ?`,
+          [playlistId],
+        ),
+      ),
+    ),
   );
   return result;
 };
@@ -97,32 +109,40 @@ const getArtistSongsByArtistId = async (
       ),
     ),
   )[0];
-  switch (roleType) {
-    case "ALL":
-      result.artistSongs = await myDataSource.query(
-        `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail
+  if (!roleType) {
+    result.artistSongs = await myDataSource.query(
+      `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail
+    WHERE (artistId = ?) GROUP BY songId`,
+      [artistId],
+    );
+  } else {
+    switch (roleType) {
+      case "ALL":
+        result.artistSongs = await myDataSource.query(
+          `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail
         WHERE (artistId = ?) GROUP BY songId ORDER BY ${sortCloumn} ${isDESCorASC}`,
-        [artistId],
-      );
-      break;
-    case "RELEASE":
-      result.artistSongs = await myDataSource.query(
-        `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail 
+          [artistId],
+        );
+        break;
+      case "RELEASE":
+        result.artistSongs = await myDataSource.query(
+          `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail 
         WHERE (artistId = ? AND albumType IN ("정규", "싱글", "미니")) GROUP BY songId ORDER BY ${sortCloumn} ${isDESCorASC}`,
-        [artistId],
-      );
-      break;
-    case "JOIN":
-      result.artistSongs = await myDataSource.query(
-        `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail 
+          [artistId],
+        );
+        break;
+      case "JOIN":
+        result.artistSongs = await myDataSource.query(
+          `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail 
         WHERE (artistId = ? AND NOT albumType IN ("정규", "싱글", "미니")) GROUP BY songId ORDER BY ${sortCloumn} ${isDESCorASC}`,
-        [artistId],
-      );
-      break;
-    default:
-      let error = new Error("Not Found");
-      error.code = 404;
-      throw error;
+          [artistId],
+        );
+        break;
+      default:
+        let error = new Error("Not Found");
+        error.code = 404;
+        throw error;
+    }
   }
   return result;
 };
@@ -147,34 +167,69 @@ const getArtistAlbumsByArtistId = async (
       ),
     ),
   )[0];
-
-  switch (roleType) {
-    case "ALL":
-      result.artistSongs = await myDataSource.query(
-        `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
+  if (!roleType) {
+    result.artistAlbums = await myDataSource.query(
+      `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
+      WHERE (artistId = ?) GROUP BY albumId`,
+      [artistId],
+    );
+  } else {
+    switch (roleType) {
+      case "ALL":
+        result.artistAlbums = await myDataSource.query(
+          `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
         WHERE (artistId = ?) GROUP BY albumId ORDER BY ${sortCloumn} ${isDESCorASC}`,
-        [artistId],
-      );
-      break;
-    case "RELEASE":
-      result.artistSongs = await myDataSource.query(
-        `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
+          [artistId],
+        );
+        break;
+      case "RELEASE":
+        result.artistAlbums = await myDataSource.query(
+          `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
         WHERE (artistId = ? AND albumType IN ("정규", "싱글", "미니")) GROUP BY albumId ORDER BY ${sortCloumn} ${isDESCorASC}`,
-        [artistId],
-      );
-      break;
-    case "JOIN":
-      result.artistSongs = await myDataSource.query(
-        `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
+          [artistId],
+        );
+        break;
+      case "JOIN":
+        result.artistAlbums = await myDataSource.query(
+          `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
         WHERE (artistId = ? AND NOT albumType IN ("정규", "싱글", "미니")) GROUP BY albumId ORDER BY ${sortCloumn} ${isDESCorASC}`,
-        [artistId],
-      );
-      break;
-    default:
-      let error = new Error("Not Found");
-      error.code = 404;
-      throw error;
+          [artistId],
+        );
+        break;
+      default:
+        let error = new Error("Not Found");
+        error.code = 404;
+        throw error;
+    }
   }
+  return result;
+};
+
+const getArtistSongsAndAlbumsByArtistId = async (artistId) => {
+  let result = {};
+  await myDataSource.query(
+    `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`,
+  );
+  result.artistInfo = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT artistId, artistName, artistImage, artistType, artistGenre FROM artistDetail WHERE artistId = ? GROUP BY artistId`,
+          [artistId],
+        ),
+      ),
+    ),
+  )[0];
+  result.artistAlbums = await myDataSource.query(
+    `SELECT artistId, artistName, albumId, albumTitle, albumImage, albumReleaseDate, albumType, albumPlayCount FROM artistDetail 
+      WHERE (artistId = ?) GROUP BY albumId`,
+    [artistId],
+  );
+  result.artistSongs = await myDataSource.query(
+    `SELECT artistId, artistName, albumId, albumTitle, albumImage, songId, songTitle, songPlayCount FROM artistDetail
+  WHERE (artistId = ?) GROUP BY songId`,
+    [artistId],
+  );
   return result;
 };
 
@@ -224,4 +279,5 @@ module.exports = {
   createPlaylistSongs,
   editPlaylistTitle,
   deletePlaylistSong,
+  getArtistSongsAndAlbumsByArtistId,
 };

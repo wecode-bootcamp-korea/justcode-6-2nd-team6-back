@@ -9,6 +9,7 @@ router.get("/album/:id/:page", detailController.getAlbumDetail);
 router.get("/playlist/:id", detailController.getPlaylistDetail);
 router.get("/mylist/:id", detailController.getMylistDetail);
 router.get("/artist/:id/:page", detailController.getArtistDetail);
+router.get("/artist/:id", detailController.getArtistDetail);
 
 router.post(
   "/mylist/:id",

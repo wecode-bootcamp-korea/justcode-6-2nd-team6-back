@@ -3,7 +3,7 @@ const browseService = require("../services/browse");
 const getBrowseData = async (req, res) => {
   const { genreid } = req.query;
   try {
-    if (!genreid) {
+    if (!genreid || genreid == 0) {
       const result = await browseService.getFullChart(genreid);
       res.status(200).json(result);
     } else {

@@ -50,9 +50,23 @@ const getSongData = async (songId) => {
   return result;
 };
 
-const play = async (songId, token) => {
+const getLikedSongsData = async (userId) => {
+  const result = await playDao.getlikedSongsDataByUserId(userId);
+  return result;
+};
+
+const getMostListenSongsData = async (userId) => {
+  const result = await playDao.getMostListenSongsDataByUserId(userId);
+  return result;
+};
+
+const getRecentListenSongsData = async (userId) => {
+  const result = await playDao.getRecentListenSongsDataByUserId(userId);
+  return result;
+};
+
+const play = async (userId, songId) => {
   await playDao.isSongIdVaild(songId);
-  const userId = await getUserId(token);
   await playDao.updatePlayCount(userId, songId);
   const result = await playDao.isLiked(userId, songId);
   return result;
@@ -66,4 +80,7 @@ module.exports = {
   getPlaylistSongsData,
   getSongData,
   play,
+  getLikedSongsData,
+  getMostListenSongsData,
+  getRecentListenSongsData,
 };

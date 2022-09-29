@@ -74,6 +74,12 @@ const getArtistAlbums = async (artistId, sortCloumn, isDESCorASC, roleType) => {
   return result;
 };
 
+const getArtistSongsAndAlbums = async (artistId) => {
+  await detailDao.isIdVaild(artistId, "artists");
+  const result = await detailDao.getArtistSongsAndAlbumsByArtistId(artistId);
+  return result;
+};
+
 const createPlaylistSongs = async (playlistId, songId) => {
   return await detailDao.createPlaylistSongs(playlistId, songId);
 };
@@ -97,4 +103,5 @@ module.exports = {
   createPlaylistSongs,
   editPlaylistTitle,
   deletePlaylistSong,
+  getArtistSongsAndAlbums,
 };
