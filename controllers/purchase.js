@@ -56,8 +56,26 @@ const purchaseVoucher = async (req, res) => {
   }
 };
 
+const getUserPurchase = async (req, res) => {
+  const { userId } = req.findUser;
+
+  if (!userId) {
+    res.status(401).json({ message: "NEED_LOGIN" });
+    return;
+  }
+
+  try {
+    const voucher = await purchaseService.getUserPurchase(userId);
+    res.status(200).json({ data: voucher });
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ err: err.message });
+  }
+};
+
 module.exports = {
   getVouchers,
   getUserVouchers,
   purchaseVoucher,
+  getUserPurchase,
 };

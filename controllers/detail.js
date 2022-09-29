@@ -131,7 +131,6 @@ const createPlaylistSongs = async (req, res) => {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
-
   if (!playlistId || !songId) {
     res.status(400).json({ message: "KEY_ERROR" });
     return;
@@ -155,7 +154,6 @@ const editPlaylistTitle = async (req, res) => {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
-
   if (!newTitle) {
     res.status(400).json({ message: "KEY_ERROR" });
     return;

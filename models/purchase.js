@@ -4,49 +4,40 @@ const { myDataSource } = require("./typeorm-client");
 const getVouchers = async () => {
   const vouchers = await myDataSource.query(
     `SELECT 
-      v.id AS voucherId,
-      v.name AS voucherName,
-      v.description AS description,
-      JSON_ARRAY(
-        "regular", 
-          JSON_ARRAYAGG(
-            JSON_OBJECT(
-              "paymentType", 'regular',
-              "name", '정기결제',
-              "description", null,
-              "originPrice", REPLACE(v.origin_price, '.', ','),
-              "salePrice", REPLACE(v.origin_price - v.sale_price, '.', ',')
-            ) 
-          ),
-          "oneMonth",
-          JSON_ARRAYAGG(
-            JSON_OBJECT(
-              "paymentType", 'oneMonth',
-              "name", '1개월권',
-              "description", null,
-              "originPrice", REPLACE(v.origin_price, '.', ','),
-              "salePrice", null
-            ) 
-          ),
-          "membershipT",
-          JSON_ARRAYAGG(
-            JSON_OBJECT(
-              "paymentType", 'membershipT',
-              "name", 'T멤버십',
-              "description", m.description,
-              "originPrice", REPLACE(m.origin_price, '.', ','),
-              "salePrice", REPLACE(m.benefit_price, '0.', '')
-            ) 
-          )
-        ) AS payments
-        FROM vouchers v
-        LEFT OUTER JOIN memberships m ON v.membership_id = m.id
-        GROUP BY v.id`,
+    v.id AS voucherId,
+    v.name AS voucherName,
+    v.description AS description,
+    JSON_ARRAY(
+      JSON_OBJECT(
+        "paymentType", 'regular',
+        "name", '정기결제',
+        "description", null,
+        "originPrice", REPLACE(v.origin_price, '.', ','),
+        "salePrice", REPLACE(v.origin_price - v.sale_price, '.', ',')
+    ),
+      JSON_OBJECT(
+        "paymentType", 'membershipT',
+        "name", 'T멤버십',
+        "description", m.description,
+        "originPrice", REPLACE(m.origin_price, '.', ','),
+        "salePrice", REPLACE(m.benefit_price, '0.', '')
+    ),
+      JSON_OBJECT(
+        "paymentType", 'oneMonth',
+        "name", '1개월권',
+        "description", null,
+        "originPrice", null,
+        "salePrice", REPLACE(v.origin_price, '.', ',')
+    )
+  ) AS payments
+  FROM vouchers v
+  LEFT OUTER JOIN memberships m ON v.membership_id = m.id
+  GROUP BY v.id`,
   );
   return vouchers;
 };
 
-// //유저 이용권 조회
+//유저 이용권 조회
 const getUserVouchers = async (userId) => {
   const voucher = await myDataSource.query(
     `SELECT
@@ -93,8 +84,38 @@ const purchaseVoucher = async (
   return purchase;
 };
 
+//유저 이용권 조회
+const getUserPurchase = async (userId) => {
+  const purchase = await myDataSource.query(
+    `SELECT u.id AS userId,
+      CASE 
+      WHEN EXISTS (
+       SELECT 1 
+       FROM purchase p 
+       WHERE p.user_id = u.id) 
+      THEN 1 
+      ELSE 0
+      END AS userVoucher
+    FROM users u
+    WHERE u.id = ?
+    `,
+    [userId],
+  );
+  return purchase;
+};
+
+/* SELECT
+    CASE
+    WHEN (select COUNT(*) 
+          from purchase p
+          where p.user_id = ?) = 0
+    THEN '0'
+    ELSE '1'
+    END AS userVoucher*/
+
 module.exports = {
   getVouchers,
   getUserVouchers,
   purchaseVoucher,
+  getUserPurchase,
 };

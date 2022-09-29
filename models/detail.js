@@ -235,14 +235,20 @@ const getArtistSongsAndAlbumsByArtistId = async (artistId) => {
 
 //플리 곡 추가
 const createPlaylistSongs = async (playlistId, songId) => {
-  const playlist = await myDataSource.query(
-    `INSERT INTO playlists_songs (playlist_id, song_id)
-    VALUES ${songId
-      .map((sID) => "(" + playlistId + "," + sID + ")")
-      .join(",")}`,
-    [playlistId, songId],
-  );
-  return playlist;
+  try {
+    const playlist = await myDataSource.query(
+      `INSERT INTO playlists_songs (playlist_id, song_id)
+      VALUES ${songId
+        .map((sID) => "(" + playlistId + "," + sID + ")")
+        .join(",")}`,
+      [playlistId, songId],
+    );
+    return playlist;
+  } catch (err) {
+    let error = new Error("이미 곡이 존재합니다.");
+    error.code = 400;
+    throw error;
+  }
 };
 
 //타이틀 수정

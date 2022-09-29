@@ -10,10 +10,16 @@ router.get(
   validateToken.validateToken,
   purchaseController.getUserVouchers,
 );
-router.patch(
+router.post(
   "/my",
   validateToken.validateToken,
   purchaseController.purchaseVoucher,
+);
+
+router.get(
+  "/user",
+  validateToken.validateToken,
+  purchaseController.getUserPurchase,
 );
 
 module.exports = router;

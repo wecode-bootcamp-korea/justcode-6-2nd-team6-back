@@ -14,8 +14,8 @@ const getUserPlaylist = async (userId) => {
       b.album_image AS albumImage,
       DATE_FORMAT(p.created_at, '%Y.%m.%d') AS createdAt
     FROM playlists p
-    JOIN playlists_songs s ON s.playlist_id = p.id
-    JOIN (
+    LEFT OUTER JOIN playlists_songs s ON s.playlist_id = p.id
+    LEFT OUTER JOIN (
       SELECT songs.id, a.album_image
       FROM songs
       JOIN albums a ON a.id = songs.album_id
