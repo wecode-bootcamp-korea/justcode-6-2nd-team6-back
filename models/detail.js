@@ -237,7 +237,7 @@ const getArtistSongsAndAlbumsByArtistId = async (artistId) => {
 const createPlaylistSongs = async (playlistId, songId) => {
   try {
     const playlist = await myDataSource.query(
-      `INSERT INTO playlists_songs (playlist_id, song_id)
+      `INSERT IGNORE INTO playlists_songs (playlist_id, song_id)
       VALUES ${songId
         .map((sID) => "(" + playlistId + "," + sID + ")")
         .join(",")}`,
