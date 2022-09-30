@@ -16,20 +16,20 @@ const hasVoucher = async (userId) => {
 };
 
 //유저의 플레이리스트 존재 여부 확인
-const isUserPlaylistVaild = async (userId, playlistId) => {
-  const result = await myDataSource.query(
-    `SELECT EXISTS (SELECT * FROM playlists WHERE (user_id = ? AND id = ?)) as isExist`,
-    [userId, playlistId],
-  );
-  const isExist = Object.values(JSON.parse(JSON.stringify(result)))[0].isExist;
-  if (isExist == 1) {
-    return;
-  } else {
-    let error = new Error("Error: No Data");
-    error.code = 200;
-    throw error;
-  }
-};
+// const isUserPlaylistVaild = async (userId, playlistId) => {
+//   const result = await myDataSource.query(
+//     `SELECT EXISTS (SELECT * FROM playlists WHERE (user_id = ? AND id = ?)) as isExist`,
+//     [userId, playlistId],
+//   );
+//   const isExist = Object.values(JSON.parse(JSON.stringify(result)))[0].isExist;
+//   if (isExist == 1) {
+//     return;
+//   } else {
+//     let error = new Error("Error: No Data");
+//     error.code = 200;
+//     throw error;
+//   }
+// };
 
 //곡 존재 여부
 const isSongIdVaild = async (id) => {
@@ -68,6 +68,11 @@ const getPlaylistSongsDataById = async (id) => {
       ),
     ),
   );
+  if (!result[0] || !result[0].songId) {
+    let error = new Error("Error: No Data");
+    error.code = 200;
+    throw error;
+  }
   return result;
 };
 
@@ -210,6 +215,37 @@ const getRecentListenSongsDataByUserId = async (userId) => {
   return result;
 };
 
+const getPopularSongsData = async () => {
+  const result = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT id AS songId, songTitle, songArtist, albumTitle, albumCover, content
+          FROM songDetail AS sd 
+          LEFT JOIN songPlayCountSum AS spcs ON sd.id = spcs.song_id 
+          ORDER BY spcs.total_count DESC`,
+        ),
+      ),
+    ),
+  );
+  return result;
+};
+
+const getAlbumSongsDataByAlbumId = async (albumId) => {
+  const result = Object.values(
+    JSON.parse(
+      JSON.stringify(
+        await myDataSource.query(
+          `SELECT songId, songTitle, artist AS songArtist, albumTitle, albumCover, content
+         FROM albumTracklist WHERE albumId = ?`,
+          [albumId],
+        ),
+      ),
+    ),
+  );
+  return result;
+};
+
 //재생목록에 한 곡 추가
 const getSongDataBySongId = async (songId) => {
   const result = Object.values(
@@ -279,7 +315,6 @@ const isLiked = async (userId, songId) => {
 
 module.exports = {
   hasVoucher,
-  isUserPlaylistVaild,
   getPlaylistSongsDataById,
   getArtistSongsDataBySongId,
   getGenreSongsDataBySongId,
@@ -290,4 +325,6 @@ module.exports = {
   getlikedSongsDataByUserId,
   getMostListenSongsDataByUserId,
   getRecentListenSongsDataByUserId,
+  getPopularSongsData,
+  getAlbumSongsDataByAlbumId,
 };

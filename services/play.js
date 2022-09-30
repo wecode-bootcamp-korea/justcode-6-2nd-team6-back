@@ -12,7 +12,6 @@ const getUserId = async (token) => {
       userId = decoded.userId;
     }
   });
-
   if (!userId) {
     let error = new Error("Error: 유저 아이디가 없습니다.");
     error.code = 403;
@@ -26,8 +25,7 @@ const canPlay = async (userId) => {
   return result;
 };
 
-const getPlaylistSongsData = async (userId, playlistId) => {
-  await playDao.isUserPlaylistVaild(userId, playlistId);
+const getPlaylistSongsData = async (playlistId) => {
   const result = await playDao.getPlaylistSongsDataById(playlistId);
   return result;
 };
@@ -65,6 +63,16 @@ const getRecentListenSongsData = async (userId) => {
   return result;
 };
 
+const getPopularSongsData = async () => {
+  const result = await playDao.getPopularSongsData();
+  return result;
+};
+
+const getAlbumSongsData = async (albumId) => {
+  const result = await playDao.getAlbumSongsDataByAlbumId(albumId);
+  return result;
+};
+
 const play = async (userId, songId) => {
   await playDao.isSongIdVaild(songId);
   await playDao.updatePlayCount(userId, songId);
@@ -83,4 +91,6 @@ module.exports = {
   getLikedSongsData,
   getMostListenSongsData,
   getRecentListenSongsData,
+  getPopularSongsData,
+  getAlbumSongsData,
 };

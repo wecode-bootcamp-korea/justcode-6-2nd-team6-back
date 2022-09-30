@@ -4,6 +4,7 @@ CREATE VIEW albumDetail AS
 SELECT 
 a.id AS id,
 a.name AS albumTitle,
+ats.id AS artistId,
 ats.name AS artist,
 a.album_type AS albumType,
 a.album_image AS albumImage,

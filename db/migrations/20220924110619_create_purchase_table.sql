@@ -6,6 +6,7 @@ voucher_id INT NOT NULL,
 user_id INT NOT NULL,
 payment VARCHAR(20),
 pay_with VARCHAR(30),
+type VARCHAR(50),
 created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 FOREIGN KEY (voucher_id) REFERENCES vouchers (id),
 FOREIGN KEY (user_id) REFERENCES users (id)

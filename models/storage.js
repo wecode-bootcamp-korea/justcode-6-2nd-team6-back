@@ -66,6 +66,8 @@ const getLikedSongsByUserId = async (userId) => {
     sd.id AS songId,
     sd.songTitle AS songTitle,
     sd.songArtist AS songArtist,
+    sd.artistId AS artistId,
+    sd.albumId AS albumId,
     sd.albumTitle AS albumTitle,
     sd.albumCover AS albumCover
     FROM like_songs AS ls
@@ -82,6 +84,8 @@ const getMostListenByUserId = async (userId) => {
     sd.id AS songId,
     sd.songTitle AS songTitle,
     sd.songArtist AS songArtist,
+    sd.artistId AS artistId,
+    sd.albumId AS albumId,
     sd.albumTitle AS albumTitle,
     sd.albumCover AS albumCover
     FROM play_counts AS pc
@@ -99,6 +103,8 @@ const getRecentListenByUserId = async (userId) => {
     sd.id AS songId,
     sd.songTitle AS songTitle,
     sd.songArtist AS songArtist,
+    sd.artistId AS artistId,
+    sd.albumId AS albumId,
     sd.albumTitle AS albumTitle,
     sd.albumCover AS albumCover
     FROM play_counts AS pc
