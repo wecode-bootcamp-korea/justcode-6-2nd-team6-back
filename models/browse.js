@@ -504,18 +504,17 @@ let result = {
 
 const getSongsOrderByPlayCount = async () => {
   result.chart = await myDataSource.query(
-    `SELECT id AS songId, songTitle, songArtist, albumTitle, albumCover 
+    `SELECT id AS songId, songTitle, songArtist, albumTitle, albumCover, content
     FROM songDetail AS sd 
     LEFT JOIN songPlayCountSum AS spcs ON sd.id = spcs.song_id 
     ORDER BY spcs.total_count DESC`,
   );
-
   return result;
 };
 
 const getSongsByGenreOrderByPlayCount = async (genreId) => {
   result.chart = await myDataSource.query(
-    `SELECT sd.id AS songId, songTitle, songArtist, albumTitle, albumCover, g.name AS songGenre
+    `SELECT sd.id AS songId, songTitle, songArtist, albumTitle, albumCover, g.name AS songGenre, sd.content
     FROM songDetail AS sd 
     LEFT JOIN songPlayCountSum AS spcs ON sd.id = spcs.song_id 
     LEFT JOIN songs AS s ON sd.id = s.id

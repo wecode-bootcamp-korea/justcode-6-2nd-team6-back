@@ -14,7 +14,7 @@ const getSongsData = async (req, res) => {
         let result;
         switch (type) {
           case "playlist":
-            result = await playService.getPlaylistSongsData(userId, id);
+            result = await playService.getPlaylistSongsData(id);
             break;
           case "artist":
             result = await playService.getArtistSongsData(id);
@@ -33,6 +33,12 @@ const getSongsData = async (req, res) => {
             break;
           case "recentlisten":
             result = await playService.getRecentListenSongsData(userId);
+            break;
+          case "popular":
+            result = await playService.getPopularSongsData();
+            break;
+          case "albumtrack":
+            result = await playService.getAlbumSongsData(id);
             break;
           default:
             res.status(404).json("Not Found");

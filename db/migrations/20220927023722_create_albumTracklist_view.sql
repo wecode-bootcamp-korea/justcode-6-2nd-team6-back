@@ -9,7 +9,9 @@ a.album_image AS albumCover,
 s.id AS songId,
 s.track_number AS trackNumber,
 s.name AS songTitle,
+s.content AS content,
 a.name AS albumTitle,
+ats.id AS artistId,
 ats.name AS artist,
 s.is_title AS isTitle
 FROM albums AS a

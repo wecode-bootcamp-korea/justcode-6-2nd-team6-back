@@ -54,14 +54,22 @@ const getMylistDetail = async (req, res) => {
 };
 
 const getArtistDetail = async (req, res) => {
-  const artistId = req.params.id;
-  const page = req.params.page;
-  const { sortType, roleType } = req.query;
-  let sortCloumn;
-  let isDESCorASC;
   try {
+    const artistId = req.params.id;
+    const page = req.params.page;
+    const { sortType, roleType } = req.query;
+    let sortCloumn;
+    let isDESCorASC;
     let result;
-    if (page === "songs") {
+    if (!page) {
+      result = await detailService.getArtistSongsAndAlbums(artistId);
+      res.status(200).json(result);
+    } else if (page === "songs") {
+      if (!sortType || !roleType) {
+        let error = new Error("Error: Please enter sortType and roleType");
+        error.code = 404;
+        throw error;
+      }
       switch (sortType) {
         case "POPULARITY":
           sortCloumn = "songPlayCount";
@@ -69,14 +77,16 @@ const getArtistDetail = async (req, res) => {
           break;
         case "RECENT":
           sortCloumn = "albumReleaseDate";
-          isDESCorASC = "ASC";
+          isDESCorASC = "DESC";
           break;
         case "WORD":
           sortCloumn = "songTitle";
           isDESCorASC = "ASC";
           break;
         default:
-          break;
+          let error = new Error("Not Found");
+          error.code = 404;
+          throw error;
       }
       result = await detailService.getArtistSongs(
         artistId,
@@ -86,6 +96,11 @@ const getArtistDetail = async (req, res) => {
       );
       res.status(200).json(result);
     } else if (page === "albums") {
+      if (!sortType || !roleType) {
+        let error = new Error("Error: Please enter sortType and roleType");
+        error.code = 404;
+        throw error;
+      }
       switch (sortType) {
         case "POPULARITY":
           sortCloumn = "albumPlayCount";
@@ -93,14 +108,16 @@ const getArtistDetail = async (req, res) => {
           break;
         case "RECENT":
           sortCloumn = "albumReleaseDate";
-          isDESCorASC = "ASC";
+          isDESCorASC = "DESC";
           break;
         case "WORD":
           sortCloumn = "albumTitle";
           isDESCorASC = "ASC";
           break;
         default:
-          break;
+          let error = new Error("Not Found");
+          error.code = 404;
+          throw error;
       }
       result = await detailService.getArtistAlbums(
         artistId,
@@ -108,9 +125,6 @@ const getArtistDetail = async (req, res) => {
         isDESCorASC,
         roleType,
       );
-      res.status(200).json(result);
-    } else if (!page) {
-      result = await detailService.getArtistSongsAndAlbums(artistId);
       res.status(200).json(result);
     } else {
       res.status(404).json("Not Found");
@@ -131,6 +145,7 @@ const createPlaylistSongs = async (req, res) => {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
+
   if (!playlistId || !songId) {
     res.status(400).json({ message: "KEY_ERROR" });
     return;
@@ -154,6 +169,7 @@ const editPlaylistTitle = async (req, res) => {
     res.status(401).json({ message: "NEED_LOGIN" });
     return;
   }
+
   if (!newTitle) {
     res.status(400).json({ message: "KEY_ERROR" });
     return;

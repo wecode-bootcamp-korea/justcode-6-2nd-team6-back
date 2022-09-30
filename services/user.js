@@ -19,6 +19,7 @@ const send = async (phone) => {
   const uri = process.env.SERVICE_ID; //서비스 ID
   const secretKey = process.env.NCP_SECRET_KEY; // Secret Key
   const accessKey = process.env.NCP_KEY; //Access Key
+  const callingNumber = process.env.CALLING_NUMBER; //발신번호
   const method = "POST";
   const space = " ";
   const newLine = "\n";
@@ -54,7 +55,7 @@ const send = async (phone) => {
     body: {
       type: "SMS",
       countryCode: "82",
-      from: "01038826683",
+      from: callingNumber,
       content: `[FLOrida]인증번호 [${verifyCode}]를 입력해 주세요.`,
       messages: [
         {

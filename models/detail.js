@@ -38,7 +38,7 @@ const getAlbumDetailByAlbumId = async (albumId) => {
 const getAlbumTracklistByAlbumId = async (albumId) => {
   let result = {};
   result.albumInfo = await myDataSource.query(
-    `SELECT id, albumTitle, artist, albumType, albumImage, albumReleaseDate, albumType FROM albumDetail WHERE id = ?`,
+    `SELECT id, albumTitle, artistId, artist, albumType, albumImage, albumReleaseDate, albumType FROM albumDetail WHERE id = ?`,
     [albumId],
   );
   result.albumSongs = await myDataSource.query(
