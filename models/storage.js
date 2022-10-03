@@ -71,7 +71,7 @@ const getLikedSongsByUserId = async (userId) => {
     sd.albumTitle AS albumTitle,
     sd.albumCover AS albumCover
     FROM like_songs AS ls
-    LEFT JOIN songdetail AS sd ON sd.id = ls.song_id
+    LEFT JOIN songDetail AS sd ON sd.id = ls.song_id
     WHERE ls.user_id = ?`,
     [userId],
   );
@@ -89,7 +89,7 @@ const getMostListenByUserId = async (userId) => {
     sd.albumTitle AS albumTitle,
     sd.albumCover AS albumCover
     FROM play_counts AS pc
-    LEFT JOIN songdetail AS sd ON sd.id = pc.song_id
+    LEFT JOIN songDetail AS sd ON sd.id = pc.song_id
     WHERE pc.user_id = ?
     ORDER BY pc.play_count DESC`,
     [userId],
@@ -108,7 +108,7 @@ const getRecentListenByUserId = async (userId) => {
     sd.albumTitle AS albumTitle,
     sd.albumCover AS albumCover
     FROM play_counts AS pc
-    LEFT JOIN songdetail AS sd ON sd.id = pc.song_id
+    LEFT JOIN songDetail AS sd ON sd.id = pc.song_id
     WHERE pc.user_id = ?
     ORDER BY pc.updated_at DESC`,
     [userId],
